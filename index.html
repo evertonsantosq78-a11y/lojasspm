@@ -22,7 +22,6 @@
         .estrela{position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:brilhar 2s infinite alternate ease-in-out;z-index:1}
         @keyframes brilhar{0%{opacity:0.2;transform:scale(0.5)}100%{opacity:1;transform:scale(1.3)}}
 
-        /* ===== TELA DE LOGIN ===== */
         #login{position:relative;z-index:10;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);padding:45px 35px;border-radius:20px;border:1px solid rgba(255,51,102,0.3);box-shadow:0 0 60px rgba(255,0,60,0.15);width:360px;text-align:center;animation:fadeIn 1s ease}
         #login h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#ff3366,#ff6699);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;letter-spacing:2px}
         #login .sub{color:#aaa;font-size:13px;margin-bottom:25px;letter-spacing:1px}
@@ -33,7 +32,6 @@
         #login button:hover{transform:scale(1.02);box-shadow:0 0 50px rgba(255,51,102,0.35)}
         @keyframes fadeIn{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
 
-        /* ===== PAINEL ===== */
         #painel{display:none;position:relative;z-index:10;width:100%;max-width:1200px;padding:20px;max-height:100vh;overflow-y:auto}
         .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px;flex-wrap:wrap;gap:10px}
         .topo h1{color:#ff3366;font-size:22px}
@@ -58,7 +56,6 @@
 
         .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
 
-        /* ===== BLOQUEIO ===== */
         #bloqueio{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;padding:20px}
         #bloqueio h1{color:#ff3366;font-size:40px;margin-bottom:20px}
         #bloqueio p{color:#aaa;font-size:18px;max-width:500px;text-align:center;line-height:1.6}
@@ -68,7 +65,6 @@
 </head>
 <body>
 
-<!-- ===== TELA DE BLOQUEIO ===== -->
 <div id="bloqueio" style="display:none">
     <h1>🔒 Acesso Bloqueado</h1>
     <p>Este aplicativo está em manutenção.<br>Por favor, aguarde a atualização das contas.</p>
@@ -108,37 +104,35 @@
 
 <script>
 // ===== BLOQUEIO =====
-// Se quiser BLOQUEAR o acesso, mude esta variável para true
-// Se quiser LIBERAR o acesso, mude para false
-const BLOQUEAR_ACESSO = false; // ⚠️ Mude para true para bloquear
+// Mude para true para bloquear o acesso, false para liberar
+const BLOQUEAR_ACESSO = false;
 
-// ===== USUÁRIOS CADASTRADOS =====
+// ===== NOVOS USUÁRIOS E SENHAS (21 clientes) =====
 const usuariosCadastrados = [
-    { usuario: 'venom', senha: '123456' },
-    { usuario: 'cliente1', senha: '111' },
-    { usuario: 'cliente2', senha: '222' },
-    { usuario: 'cliente3', senha: '333' },
-    { usuario: 'cliente4', senha: '444' },
-    { usuario: 'cliente5', senha: '555' },
-    { usuario: 'cliente6', senha: '666' },
-    { usuario: 'cliente7', senha: '777' },
-    { usuario: 'cliente8', senha: '888' },
-    { usuario: 'cliente9', senha: '999' },
-    { usuario: 'cliente10', senha: '101' },
-    { usuario: 'cliente11', senha: '112' },
-    { usuario: 'cliente12', senha: '123' },
-    { usuario: 'cliente13', senha: '134' },
-    { usuario: 'cliente14', senha: '145' },
-    { usuario: 'cliente15', senha: '156' },
-    { usuario: 'cliente16', senha: '167' },
-    { usuario: 'cliente17', senha: '178' },
-    { usuario: 'cliente18', senha: '189' },
-    { usuario: 'cliente19', senha: '190' },
-    { usuario: 'cliente20', senha: '202' }
+    { usuario: 'clienteA1', senha: 'x7k9m2' },
+    { usuario: 'clienteB2', senha: 'p4r8s1' },
+    { usuario: 'clienteC3', senha: 'w5n6t3' },
+    { usuario: 'clienteD4', senha: 'j9l2k7' },
+    { usuario: 'clienteE5', senha: 'm3q8v4' },
+    { usuario: 'clienteF6', senha: 'z6x1c9' },
+    { usuario: 'clienteG7', senha: 'b2h4n8' },
+    { usuario: 'clienteH8', senha: 'v5p7k2' },
+    { usuario: 'clienteI9', senha: 'r8t3m6' },
+    { usuario: 'clienteJ10', senha: 's9w4q1' },
+    { usuario: 'clienteK11', senha: 'f2d6h9' },
+    { usuario: 'clienteL12', senha: 'g5j8k3' },
+    { usuario: 'clienteM13', senha: 'y7u2i4' },
+    { usuario: 'clienteN14', senha: 'a3s5d8' },
+    { usuario: 'clienteO15', senha: 'e6r9t2' },
+    { usuario: 'clienteP16', senha: 'l4m7q1' },
+    { usuario: 'clienteQ17', senha: 'c8v2b5' },
+    { usuario: 'clienteR18', senha: 'n9x4z7' },
+    { usuario: 'clienteS19', senha: 'h1k6p3' },
+    { usuario: 'clienteT20', senha: 'w8e4r9' },
+    { usuario: 'admin', senha: 'admin2026' }
 ];
 
 // ===== PLATAFORMAS E CONTAS =====
-// ⬇️ COLOQUE AQUI TODAS AS SUAS CONTAS E LINKS ⬇️
 const plataformas = [
     {
         nome: 'Spotify',
@@ -152,7 +146,7 @@ const plataformas = [
         tipo: 'link',
         contas: [
             { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' },
-            { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' }
+            { link: 'https://www.canva.com/brand/join?token=SEU_NOVO_TOKEN_AQUI&referrer=team-invite' }
         ]
     },
     {
@@ -251,7 +245,6 @@ const plataformas = [
 
 // ===== VERIFICA BLOQUEIO =====
 if (BLOQUEAR_ACESSO) {
-    // Mostra tela de bloqueio e esconde o login
     document.getElementById('bloqueio').style.display = 'flex';
     document.getElementById('login').style.display = 'none';
 } else {
@@ -382,7 +375,6 @@ function mostrarToast(msg) {
     }, 2000);
 }
 
-// ===== EVENTOS =====
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('user').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
