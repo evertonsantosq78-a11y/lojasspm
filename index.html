@@ -44,8 +44,9 @@
         .card:hover{border-color:rgba(255,51,102,0.2)}
         .card h3{color:#fff;font-size:16px;margin-bottom:8px}
         .card .badge{background:#22c55e;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
+        .card .badge-usada{background:#ff4d4d;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
         .card .obs{color:#ffaa00;font-size:12px;padding:6px 10px;background:rgba(255,170,0,0.1);border-radius:6px;margin:8px 0}
-        .card .conta{background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;margin:6px 0}
+        .card .conta{background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;margin:6px 0;position:relative}
         .card .conta .linha{display:flex;align-items:center;gap:8px;padding:2px 0;flex-wrap:wrap}
         .card .conta .label{color:#888;font-size:11px;min-width:40px}
         .card .conta .valor{color:#fff;font-size:13px;font-weight:bold;word-break:break-all;flex:1}
@@ -53,8 +54,12 @@
         .card .btn-copiar:hover{background:#22c55e}
         .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px;border:none;cursor:pointer}
         .card .btn-link:hover{background:#cc0055}
+        .card .btn-pegar{background:#ff3366;color:#fff;border:none;padding:5px 15px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;margin-top:5px;width:100%}
+        .card .btn-pegar:hover{background:#cc0055}
+        .card .conta-usada{background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.2);padding:10px;border-radius:8px;margin:6px 0;text-align:center;color:#ff4d4d}
 
         .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
+        .toast-erro{background:#ff4d4d}
 
         #bloqueio{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;padding:20px}
         #bloqueio h1{color:#ff3366;font-size:40px;margin-bottom:20px}
@@ -104,10 +109,9 @@
 
 <script>
 // ===== BLOQUEIO =====
-// Mude para true para bloquear o acesso, false para liberar
 const BLOQUEAR_ACESSO = false;
 
-// ===== NOVOS USUÁRIOS E SENHAS (21 clientes) =====
+// ===== USUÁRIOS =====
 const usuariosCadastrados = [
     { usuario: 'clienteA1', senha: 'x7k9m2' },
     { usuario: 'clienteB2', senha: 'p4r8s1' },
@@ -132,116 +136,159 @@ const usuariosCadastrados = [
     { usuario: 'admin', senha: 'admin2026' }
 ];
 
-// ===== PLATAFORMAS E CONTAS =====
+// ===== PLATAFORMAS E CONTAS (COM ID ÚNICO E DISPONIVEL) =====
 const plataformas = [
     {
         nome: 'Spotify',
         contas: [
-            { email: 'spotify1@email.com', senha: 'senha123' },
-            { email: 'spotify2@email.com', senha: 'senha456' }
+            { id: 'spotify_1', email: 'spotify1@email.com', senha: 'senha123', disponivel: true },
+            { id: 'spotify_2', email: 'spotify2@email.com', senha: 'senha456', disponivel: true }
         ]
     },
     {
         nome: 'Canva',
         tipo: 'link',
         contas: [
-            { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' },
-            { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' }
+            { id: 'canva_1', link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite', disponivel: true },
+            { id: 'canva_2', link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite', disponivel: true }
         ]
     },
     {
         nome: 'Amazon Prime',
         contas: [
-            { email: 'guce827272@hotmail.com', senha: 'jo9De6&$@#!' }
+            { id: 'prime_1', email: 'guce827272@hotmail.com', senha: 'jo9De6&$@#!', disponivel: true }
         ],
         obs: 'Adicionar de 7 dias (tela)'
     },
     {
         nome: 'Max (HBO)',
         contas: [
-            { email: 'r2cesar@hotmail.com', senha: 'Nuevo263545' }
+            { id: 'hbomax_1', email: 'r2cesar@hotmail.com', senha: 'Nuevo263545', disponivel: true }
         ]
     },
     {
         nome: 'Globoplay',
         contas: [
-            { email: 'silvaestamparia@gmail.com', senha: 'Jhon@8811' }
+            { id: 'globoplay_1', email: 'silvaestamparia@gmail.com', senha: 'Jhon@8811', disponivel: true }
         ]
     },
     {
         nome: 'Netflix (TV)',
         tipo: 'link',
         contas: [
-            { link: 'https://www.netflix.com/convite/123456' }
+            { id: 'netflixtv_1', link: 'https://www.netflix.com/convite/123456', disponivel: true }
         ],
         obs: 'Cliente tem direito a 3 ativações na TV'
     },
     {
         nome: 'Youcine',
         contas: [
-            { email: 'youcine1@email.com', senha: 'senha123' },
-            { email: 'youcine2@email.com', senha: 'senha456' },
-            { email: 'youcine3@email.com', senha: 'senha789' }
+            { id: 'youcine_1', email: 'youcine1@email.com', senha: 'senha123', disponivel: true },
+            { id: 'youcine_2', email: 'youcine2@email.com', senha: 'senha456', disponivel: true },
+            { id: 'youcine_3', email: 'youcine3@email.com', senha: 'senha789', disponivel: true }
         ],
         obs: 'Cliente tem direito a 3 contas'
     },
     {
         nome: 'YouTube',
         contas: [
-            { email: 'youtube1@email.com', senha: 'senha123' }
+            { id: 'youtube_1', email: 'youtube1@email.com', senha: 'senha123', disponivel: true }
         ]
     },
     {
         nome: 'UniTV',
         contas: [
-            { email: 'unitv1@email.com', senha: 'senha123' },
-            { email: 'unitv2@email.com', senha: 'senha456' },
-            { email: 'unitv3@email.com', senha: 'senha789' }
+            { id: 'unitv_1', email: 'unitv1@email.com', senha: 'senha123', disponivel: true },
+            { id: 'unitv_2', email: 'unitv2@email.com', senha: 'senha456', disponivel: true },
+            { id: 'unitv_3', email: 'unitv3@email.com', senha: 'senha789', disponivel: true }
         ],
         obs: 'Cliente tem direito a 3 contas'
     },
     {
         nome: 'Crunchyroll',
         contas: [
-            { email: 'crunchyroll1@email.com', senha: 'senha123' }
+            { id: 'crunchyroll_1', email: 'crunchyroll1@email.com', senha: 'senha123', disponivel: true }
         ],
         obs: 'Ativação na TV'
     },
     {
         nome: 'Deezer Individual',
         contas: [
-            { email: 'votehap834@gicont.com', senha: 'votehap834@' }
+            { id: 'deezer_1', email: 'votehap834@gicont.com', senha: 'votehap834@', disponivel: true }
         ]
     },
     {
         nome: 'Paramount+',
         contas: [
-            { email: 'kponasim4@gmail.com', senha: 'nasimdh123' }
+            { id: 'paramount_1', email: 'kponasim4@gmail.com', senha: 'nasimdh123', disponivel: true }
         ]
     },
     {
         nome: 'Deezer Família',
         contas: [
-            { email: 'deezerfamilia1@email.com', senha: 'senha123' }
+            { id: 'deezerfam_1', email: 'deezerfamilia1@email.com', senha: 'senha123', disponivel: true }
         ]
     },
     {
         nome: 'YouTube Família',
         contas: [
-            { email: 'youtubefamilia1@email.com', senha: 'senha123' }
+            { id: 'youtubefam_1', email: 'youtubefamilia1@email.com', senha: 'senha123', disponivel: true }
         ]
     },
     {
         nome: 'Netflix Celular',
         tipo: 'link',
         contas: [
-            { link: 'https://www.netflix.com/convite/789101' },
-            { link: 'https://www.netflix.com/convite/112131' },
-            { link: 'https://www.netflix.com/convite/415161' }
+            { id: 'netflixcel_1', link: 'https://www.netflix.com/convite/789101', disponivel: true },
+            { id: 'netflixcel_2', link: 'https://www.netflix.com/convite/112131', disponivel: true },
+            { id: 'netflixcel_3', link: 'https://www.netflix.com/convite/415161', disponivel: true }
         ],
         obs: 'Cliente tem direito a 3 contas no celular'
     }
 ];
+
+// ===== CARREGA CONTAS JÁ PEGAS =====
+function carregarEstadoContas() {
+    try {
+        const salvo = localStorage.getItem('contasPegas');
+        if (salvo) {
+            const pegas = JSON.parse(salvo);
+            plataformas.forEach(p => {
+                p.contas.forEach(c => {
+                    if (pegas.includes(c.id)) {
+                        c.disponivel = false;
+                    }
+                });
+            });
+        }
+    } catch(e) {}
+}
+carregarEstadoContas();
+
+// ===== FUNÇÃO PEGAR CONTA =====
+function pegarConta(plataformaIdx, contaIdx) {
+    const conta = plataformas[plataformaIdx].contas[contaIdx];
+    
+    if (!conta.disponivel) {
+        mostrarToast('❌ Esta conta já foi utilizada!', true);
+        return;
+    }
+
+    if (!confirm('⚠️ Tem certeza que quer pegar esta conta?\n\nDepois de confirmar, ela será removida do painel permanentemente.')) {
+        return;
+    }
+
+    conta.disponivel = false;
+
+    try {
+        let pegas = JSON.parse(localStorage.getItem('contasPegas') || '[]');
+        pegas.push(conta.id);
+        localStorage.setItem('contasPegas', JSON.stringify(pegas));
+    } catch(e) {}
+
+    carregarPainel();
+    mostrarToast('✅ Conta pega com sucesso!');
+}
 
 // ===== VERIFICA BLOQUEIO =====
 if (BLOQUEAR_ACESSO) {
@@ -250,6 +297,24 @@ if (BLOQUEAR_ACESSO) {
 } else {
     document.getElementById('bloqueio').style.display = 'none';
     document.getElementById('login').style.display = 'block';
+}
+
+// ===== LOGIN PERSISTENTE =====
+function verificarLoginSalvo() {
+    const usuarioSalvo = localStorage.getItem('usuarioLogado');
+    if (usuarioSalvo) {
+        const existe = usuariosCadastrados.some(u => u.usuario === usuarioSalvo);
+        if (existe) {
+            document.getElementById('login').style.display = 'none';
+            document.getElementById('painel').style.display = 'block';
+            document.getElementById('nomeUsuario').textContent = 'Olá, ' + usuarioSalvo + '!';
+            carregarPainel();
+            return true;
+        } else {
+            localStorage.removeItem('usuarioLogado');
+        }
+    }
+    return false;
 }
 
 // ===== FUNÇÕES =====
@@ -272,6 +337,7 @@ function entrar() {
     });
 
     if (usuarioValido) {
+        localStorage.setItem('usuarioLogado', userDigitado);
         document.getElementById('login').style.display = 'none';
         document.getElementById('painel').style.display = 'block';
         document.getElementById('nomeUsuario').textContent = 'Olá, ' + userDigitado + '!';
@@ -282,6 +348,7 @@ function entrar() {
 }
 
 function sair() {
+    localStorage.removeItem('usuarioLogado');
     document.getElementById('login').style.display = 'block';
     document.getElementById('painel').style.display = 'none';
     document.getElementById('user').value = '';
@@ -291,7 +358,15 @@ function sair() {
 function carregarPainel() {
     var grid = document.getElementById('gridPlataformas');
     grid.innerHTML = '';
-    plataformas.forEach(function(p) {
+    
+    var temContaDisponivel = false;
+    
+    plataformas.forEach(function(p, pIdx) {
+        var temDisponivel = p.contas.some(function(c) { return c.disponivel; });
+        if (!temDisponivel) return;
+        
+        temContaDisponivel = true;
+        
         var card = document.createElement('div');
         card.className = 'card';
 
@@ -303,7 +378,14 @@ function carregarPainel() {
         }
 
         html += '<div class="contas">';
-        p.contas.forEach(function(c) {
+        p.contas.forEach(function(c, cIdx) {
+            if (!c.disponivel) {
+                html += '<div class="conta-usada">';
+                html += '❌ Conta já utilizada';
+                html += '</div>';
+                return;
+            }
+            
             html += '<div class="conta">';
             if(p.tipo === 'link') {
                 html += '<div class="linha">';
@@ -326,6 +408,7 @@ function carregarPainel() {
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
             }
+            html += '<button class="btn-pegar" onclick="pegarConta(' + pIdx + ',' + cIdx + ')">🔓 Pegar Conta</button>';
             html += '</div>';
         });
         html += '</div>';
@@ -333,6 +416,15 @@ function carregarPainel() {
         card.innerHTML = html;
         grid.appendChild(card);
     });
+    
+    if (!temContaDisponivel) {
+        grid.innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:rgba(20,20,30,0.85);border-radius:16px;border:1px solid rgba(255,51,102,0.2)">
+                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px">🔄 Nenhuma conta disponível</h2>
+                <p style="color:#888;font-size:16px">Todas as contas foram utilizadas.<br>Aguarde o administrador adicionar novas contas.</p>
+            </div>
+        `;
+    }
 }
 
 function abrirLink(url) {
@@ -347,7 +439,7 @@ function copiar(texto) {
     var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
     if(navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textoLimpo).then(function() {
-            mostrarToast('Copiado!');
+            mostrarToast('📋 Copiado!');
         }).catch(function() {
             copiarFallback(textoLimpo);
         });
@@ -363,19 +455,29 @@ function copiarFallback(texto) {
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
-    mostrarToast('Copiado!');
+    mostrarToast('📋 Copiado!');
 }
 
-function mostrarToast(msg) {
+function mostrarToast(msg, erro) {
     var toast = document.getElementById('toast');
     toast.textContent = msg;
+    toast.className = 'toast';
+    if (erro) {
+        toast.classList.add('toast-erro');
+    }
     toast.style.display = 'block';
     setTimeout(function() {
         toast.style.display = 'none';
-    }, 2000);
+    }, 3000);
 }
 
+// ===== INICIALIZA =====
 document.addEventListener('DOMContentLoaded', function() {
+    if (!verificarLoginSalvo()) {
+        document.getElementById('login').style.display = 'block';
+        document.getElementById('painel').style.display = 'none';
+    }
+    
     document.getElementById('user').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
             document.getElementById('pass').focus();
