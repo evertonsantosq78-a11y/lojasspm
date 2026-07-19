@@ -36,6 +36,9 @@
         .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px;flex-wrap:wrap;gap:10px}
         .topo h1{color:#ff3366;font-size:22px}
         .topo .user{color:#aaa;font-size:14px}
+        .topo .botoes-topo{display:flex;gap:10px;flex-wrap:wrap}
+        .topo .atualizar-btn{background:#ffaa00;color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:bold}
+        .topo .atualizar-btn:hover{background:#ffcc00}
         .topo .sair{color:#ff4d4d;border:1px solid #ff4d4d;padding:6px 16px;border-radius:8px;cursor:pointer;background:transparent;font-weight:bold}
         .topo .sair:hover{background:#ff4d4d;color:#fff}
 
@@ -99,7 +102,10 @@
             <h1>💎 Loja Vênus</h1>
             <span class="user" id="nomeUsuario">Olá, Cliente!</span>
         </div>
-        <button class="sair" onclick="sair()">Sair</button>
+        <div class="botoes-topo">
+            <button class="atualizar-btn" onclick="carregarPainel()">🔄 Atualizar Contas</button>
+            <button class="sair" onclick="sair()">Sair</button>
+        </div>
     </div>
 
     <div class="grid" id="gridPlataformas"></div>
@@ -356,6 +362,30 @@ function sair() {
 }
 
 function carregarPainel() {
+    // Recarrega o estado das contas do localStorage
+    try {
+        const salvo = localStorage.getItem('contasPegas');
+        if (salvo) {
+            const pegas = JSON.parse(salvo);
+            plataformas.forEach(p => {
+                p.contas.forEach(c => {
+                    if (pegas.includes(c.id)) {
+                        c.disponivel = false;
+                    } else {
+                        c.disponivel = true;
+                    }
+                });
+            });
+        } else {
+            // Se não tiver nada salvo, todas as contas ficam disponíveis
+            plataformas.forEach(p => {
+                p.contas.forEach(c => {
+                    c.disponivel = true;
+                });
+            });
+        }
+    } catch(e) {}
+
     var grid = document.getElementById('gridPlataformas');
     grid.innerHTML = '';
     
