@@ -47,7 +47,6 @@
         .card:hover{border-color:rgba(255,51,102,0.2)}
         .card h3{color:#fff;font-size:16px;margin-bottom:8px}
         .card .badge{background:#22c55e;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
-        .card .badge-usada{background:#ff4d4d;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
         .card .obs{color:#ffaa00;font-size:12px;padding:6px 10px;background:rgba(255,170,0,0.1);border-radius:6px;margin:8px 0}
         .card .conta{background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;margin:6px 0;position:relative}
         .card .conta .linha{display:flex;align-items:center;gap:8px;padding:2px 0;flex-wrap:wrap}
@@ -57,12 +56,12 @@
         .card .btn-copiar:hover{background:#22c55e}
         .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px;border:none;cursor:pointer}
         .card .btn-link:hover{background:#cc0055}
-        .card .btn-pegar{background:#ff3366;color:#fff;border:none;padding:5px 15px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;margin-top:5px;width:100%}
-        .card .btn-pegar:hover{background:#cc0055}
-        .card .conta-usada{background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.2);padding:10px;border-radius:8px;margin:6px 0;text-align:center;color:#ff4d4d}
+        
+        /* Botão de apagar exclusivo do Admin */
+        .btn-apagar-admin{background:#ff4d4d;color:#fff;border:none;padding:4px 8px;border-radius:4px;cursor:pointer;font-size:10px;font-weight:bold;margin-top:8px;width:100%}
+        .btn-apagar-admin:hover{background:#cc0000}
 
         .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
-        .toast-erro{background:#ff4d4d}
 
         #bloqueio{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;padding:20px}
         #bloqueio h1{color:#ff3366;font-size:40px;margin-bottom:20px}
@@ -74,7 +73,7 @@
 <body>
 
 <div id="bloqueio" style="display:none">
-    <h1>🔒 Acesso Bloqueado</h1>
+    <h1> Acesso Bloqueado</h1>
     <p>Este aplicativo está em manutenção.<br>Por favor, aguarde a atualização das contas.</p>
     <p style="color:#666;font-size:14px;margin-top:30px">Entre em contato com o suporte para mais informações.</p>
 </div>
@@ -88,22 +87,22 @@
 </div>
 
 <div id="login">
-    <h1>💎 Vênus</h1>
+    <h1> Vênus</h1>
     <p class="sub">Loja de Streams</p>
     <input type="text" id="user" placeholder="Usuário" required>
     <input type="password" id="pass" placeholder="Senha" required>
-    <button onclick="entrar()">🔓 Entrar</button>
+    <button onclick="entrar()"> Entrar</button>
     <p style="margin-top:12px;font-size:11px;color:#555">Insira seus dados de acesso</p>
 </div>
 
 <div id="painel">
     <div class="topo">
         <div>
-            <h1>💎 Loja Vênus</h1>
+            <h1> Loja Vênus</h1>
             <span class="user" id="nomeUsuario">Olá, Cliente!</span>
         </div>
         <div class="botoes-topo">
-            <button class="atualizar-btn" onclick="carregarPainel()">🔄 Atualizar Contas</button>
+            <button class="atualizar-btn" onclick="carregarPainel()"> Atualizar Contas</button>
             <button class="sair" onclick="sair()">Sair</button>
         </div>
     </div>
@@ -142,7 +141,7 @@ const usuariosCadastrados = [
     { usuario: 'admin', senha: 'admin2026' }
 ];
 
-// ===== PLATAFORMAS E CONTAS (COM ID E DISPONIVEL) =====
+// ===== PLATAFORMAS E CONTAS =====
 const plataformas = [
     {
         nome: 'Spotify',
@@ -253,48 +252,7 @@ const plataformas = [
     }
 ];
 
-// ===== CARREGA CONTAS JÁ PEGAS =====
-function carregarEstadoContas() {
-    try {
-        const salvo = localStorage.getItem('contasPegas');
-        if (salvo) {
-            const pegas = JSON.parse(salvo);
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    if (pegas.includes(c.id)) {
-                        c.disponivel = false;
-                    }
-                });
-            });
-        }
-    } catch(e) {}
-}
-carregarEstadoContas();
-
-// ===== FUNÇÃO PEGAR CONTA =====
-function pegarConta(plataformaIdx, contaIdx) {
-    const conta = plataformas[plataformaIdx].contas[contaIdx];
-    
-    if (!conta.disponivel) {
-        mostrarToast('❌ Esta conta já foi utilizada!', true);
-        return;
-    }
-
-    if (!confirm('⚠️ Tem certeza que quer pegar esta conta?\n\nDepois de confirmar, ela será removida do painel permanentemente.')) {
-        return;
-    }
-
-    conta.disponivel = false;
-
-    try {
-        let pegas = JSON.parse(localStorage.getItem('contasPegas') || '[]');
-        pegas.push(conta.id);
-        localStorage.setItem('contasPegas', JSON.stringify(pegas));
-    } catch(e) {}
-
-    carregarPainel();
-    mostrarToast('✅ Conta pega com sucesso!');
-}
+let usuarioLogado = "";
 
 // ===== VERIFICA BLOQUEIO =====
 if (BLOQUEAR_ACESSO) {
@@ -311,6 +269,7 @@ function verificarLoginSalvo() {
     if (usuarioSalvo) {
         const existe = usuariosCadastrados.some(u => u.usuario === usuarioSalvo);
         if (existe) {
+            usuarioLogado = usuarioSalvo;
             document.getElementById('login').style.display = 'none';
             document.getElementById('painel').style.display = 'block';
             document.getElementById('nomeUsuario').textContent = 'Olá, ' + usuarioSalvo + '!';
@@ -326,7 +285,7 @@ function verificarLoginSalvo() {
 // ===== FUNÇÕES =====
 function entrar() {
     if (BLOQUEAR_ACESSO) {
-        alert('🔒 Acesso bloqueado! O app está em manutenção.');
+        alert(' Acesso bloqueado! O app está em manutenção.');
         return;
     }
 
@@ -343,10 +302,11 @@ function entrar() {
     });
 
     if (usuarioValido) {
-        localStorage.setItem('usuarioLogado', userDigitado);
+        usuarioLogado = usuarioValido.usuario;
+        localStorage.setItem('usuarioLogado', usuarioLogado);
         document.getElementById('login').style.display = 'none';
         document.getElementById('painel').style.display = 'block';
-        document.getElementById('nomeUsuario').textContent = 'Olá, ' + userDigitado + '!';
+        document.getElementById('nomeUsuario').textContent = 'Olá, ' + usuarioLogado + '!';
         carregarPainel();
     } else {
         alert('Usuário ou senha incorretos!');
@@ -355,6 +315,7 @@ function entrar() {
 
 function sair() {
     localStorage.removeItem('usuarioLogado');
+    usuarioLogado = "";
     document.getElementById('login').style.display = 'block';
     document.getElementById('painel').style.display = 'none';
     document.getElementById('user').value = '';
@@ -362,30 +323,6 @@ function sair() {
 }
 
 function carregarPainel() {
-    // Recarrega o estado das contas do localStorage
-    try {
-        const salvo = localStorage.getItem('contasPegas');
-        if (salvo) {
-            const pegas = JSON.parse(salvo);
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    if (pegas.includes(c.id)) {
-                        c.disponivel = false;
-                    } else {
-                        c.disponivel = true;
-                    }
-                });
-            });
-        } else {
-            // Se não tiver nada salvo, todas as contas ficam disponíveis
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    c.disponivel = true;
-                });
-            });
-        }
-    } catch(e) {}
-
     var grid = document.getElementById('gridPlataformas');
     grid.innerHTML = '';
     
@@ -404,17 +341,12 @@ function carregarPainel() {
         html += '<span class="badge">Ativo</span>';
 
         if(p.obs) {
-            html += '<div class="obs">⚠️ ' + p.obs + '</div>';
+            html += '<div class="obs"> ' + p.obs + '</div>';
         }
 
         html += '<div class="contas">';
         p.contas.forEach(function(c, cIdx) {
-            if (!c.disponivel) {
-                html += '<div class="conta-usada">';
-                html += '❌ Conta já utilizada';
-                html += '</div>';
-                return;
-            }
+            if (!c.disponivel) return; // Se a conta foi tirada da lista, ela nem gera elemento
             
             html += '<div class="conta">';
             if(p.tipo === 'link') {
@@ -424,7 +356,7 @@ function carregarPainel() {
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.link.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
                 html += '<div class="linha">';
-                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link">🔗 Abrir Link</button>';
+                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link"> Abrir Link</button>';
                 html += '</div>';
             } else {
                 html += '<div class="linha">';
@@ -438,7 +370,12 @@ function carregarPainel() {
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
             }
-            html += '<button class="btn-pegar" onclick="pegarConta(' + pIdx + ',' + cIdx + ')">🔓 Pegar Conta</button>';
+
+            // SE LOGADO COMO ADMIN, MOSTRA O BOTÃO PARA EXCLUIR E GERAR CÓDIGO NOVO
+            if (usuarioLogado === 'admin') {
+                html += '<button class="btn-apagar-admin" onclick="removerDoCodigo(' + pIdx + ',' + cIdx + ')"> Apagar do Código</button>';
+            }
+
             html += '</div>';
         });
         html += '</div>';
@@ -450,10 +387,38 @@ function carregarPainel() {
     if (!temContaDisponivel) {
         grid.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:rgba(20,20,30,0.85);border-radius:16px;border:1px solid rgba(255,51,102,0.2)">
-                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px">🔄 Nenhuma conta disponível</h2>
+                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px"> Nenhuma conta disponível</h2>
                 <p style="color:#888;font-size:16px">Todas as contas foram utilizadas.<br>Aguarde o administrador adicionar novas contas.</p>
             </div>
         `;
+    }
+}
+
+// ===== FUNÇÃO DE REMOÇÃO DO CÓDIGO PARA O ADMIN =====
+function removerDoCodigo(pIdx, cIdx) {
+    const conta = plataformas[pIdx].contas[cIdx];
+    const servico = plataformas[pIdx].nome;
+    
+    if (confirm(' ATENÇÃO ADMIN:\nDeseja apagar permanentemente a conta [' + (conta.email || 'Link') + '] de ' + servico + '?\n\nO sistema vai gerar o código pronto do bloco "const plataformas" para você substituir no GitHub.')) {
+        
+        // Remove a conta do array local na memória do script
+        plataformas[pIdx].contas.splice(cIdx, 1);
+        
+        // Se o serviço ficou sem nenhuma conta dentro dele, limpa a exibição
+        carregarPainel();
+        
+        // Gera o texto formatado idêntico à sua estrutura para você colar no GitHub
+        const textoEstruturaNova = JSON.stringify(plataformas, null, 4);
+        
+        // Cria uma caixa de exibição temporária para você copiar o código
+        const caixaTexto = document.createElement('textarea');
+        caixaTexto.value = "const plataformas = " + textoEstruturaNova + ";";
+        document.body.appendChild(caixaTexto);
+        caixaTexto.select();
+        document.execCommand('copy');
+        document.body.removeChild(caixaTexto);
+        
+        alert(' Conta removida no painel!\n\nO código da lista "const plataformas" atualizado foi AUTOMATICAMENTE copiado para a sua área de transferência.\n\nAgora vá no seu GitHub, edite o index.html, selecione o bloco antigo das plataformas e dê um colar (Ctrl+V)!');
     }
 }
 
@@ -469,7 +434,7 @@ function copiar(texto) {
     var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
     if(navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textoLimpo).then(function() {
-            mostrarToast('📋 Copiado!');
+            mostrarToast(' Copiado!');
         }).catch(function() {
             copiarFallback(textoLimpo);
         });
@@ -485,16 +450,12 @@ function copiarFallback(texto) {
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
-    mostrarToast('📋 Copiado!');
+    mostrarToast(' Copiado!');
 }
 
-function mostrarToast(msg, erro) {
+function mostrarToast(msg) {
     var toast = document.getElementById('toast');
     toast.textContent = msg;
-    toast.className = 'toast';
-    if (erro) {
-        toast.classList.add('toast-erro');
-    }
     toast.style.display = 'block';
     setTimeout(function() {
         toast.style.display = 'none';
@@ -535,7 +496,7 @@ for (var i = 0; i < 120; i++) {
 }
 
 var neveContainer = document.getElementById('neve');
-var flocos = ['❄', '❅', '❆', '✦', '•'];
+var flocos = ['', '', '', '', '•'];
 for (var i = 0; i < 80; i++) {
     var floco = document.createElement('div');
     floco.className = 'floco';
