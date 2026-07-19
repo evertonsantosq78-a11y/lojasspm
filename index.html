@@ -8,22 +8,17 @@
         *{margin:0;padding:0;box-sizing:border-box}
         body{font-family:'Segoe UI',sans-serif;height:100vh;overflow:hidden;background:#0a0a0f;display:flex;justify-content:center;align-items:center}
 
-        /* ===== FUNDO ===== */
         .fundo{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,#1a0a0a,#0a0a0f);z-index:0;overflow:hidden}
-
-        /* ===== LUZES ===== */
         .luz{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.3;animation:piscar 3s infinite alternate ease-in-out}
         .luz1{width:300px;height:300px;background:#ff0040;top:10%;left:-5%;animation-delay:0s}
         .luz2{width:400px;height:400px;background:#ff0040;bottom:10%;right:-10%;animation-delay:1.5s}
         .luz3{width:200px;height:200px;background:#ff0040;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0.8s}
         @keyframes piscar{0%{opacity:0.1;transform:scale(0.8)}100%{opacity:0.5;transform:scale(1.2)}}
 
-        /* ===== NEVE ===== */
         .neve{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
         .floco{position:absolute;top:-20px;color:#fff;font-size:14px;opacity:0.8;animation:cair linear infinite;text-shadow:0 0 10px rgba(255,255,255,0.6)}
         @keyframes cair{0%{transform:translateY(-20px) rotate(0deg);opacity:0.8}100%{transform:translateY(110vh) rotate(720deg);opacity:0.2}}
 
-        /* ===== ESTRELAS ===== */
         .estrela{position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:brilhar 2s infinite alternate ease-in-out;z-index:1}
         @keyframes brilhar{0%{opacity:0.2;transform:scale(0.5)}100%{opacity:1;transform:scale(1.3)}}
 
@@ -40,7 +35,7 @@
 
         /* ===== PAINEL ===== */
         #painel{display:none;position:relative;z-index:10;width:100%;max-width:1200px;padding:20px;max-height:100vh;overflow-y:auto}
-        .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px}
+        .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px;flex-wrap:wrap;gap:10px}
         .topo h1{color:#ff3366;font-size:22px}
         .topo .user{color:#aaa;font-size:14px}
         .topo .sair{color:#ff4d4d;border:1px solid #ff4d4d;padding:6px 16px;border-radius:8px;cursor:pointer;background:transparent;font-weight:bold}
@@ -63,10 +58,22 @@
 
         .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
 
+        /* ===== BLOQUEIO ===== */
+        #bloqueio{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;padding:20px}
+        #bloqueio h1{color:#ff3366;font-size:40px;margin-bottom:20px}
+        #bloqueio p{color:#aaa;font-size:18px;max-width:500px;text-align:center;line-height:1.6}
+
         @media(max-width:600px){#login{width:90%;padding:30px 20px}.grid{grid-template-columns:1fr}}
     </style>
 </head>
 <body>
+
+<!-- ===== TELA DE BLOQUEIO ===== -->
+<div id="bloqueio" style="display:none">
+    <h1>🔒 Acesso Bloqueado</h1>
+    <p>Este aplicativo está em manutenção.<br>Por favor, aguarde a atualização das contas.</p>
+    <p style="color:#666;font-size:14px;margin-top:30px">Entre em contato com o suporte para mais informações.</p>
+</div>
 
 <div class="fundo">
     <div class="luz luz1"></div>
@@ -100,8 +107,14 @@
 <div id="toast" class="toast">Copiado!</div>
 
 <script>
+// ===== BLOQUEIO =====
+// Se quiser BLOQUEAR o acesso, mude esta variável para true
+// Se quiser LIBERAR o acesso, mude para false
+const BLOQUEAR_ACESSO = false; // ⚠️ Mude para true para bloquear
+
+// ===== USUÁRIOS CADASTRADOS =====
 const usuariosCadastrados = [
-    { usuario: 'venom', senha: '123456' },
+    { usuario: 'admin', senha: '123' },
     { usuario: 'cliente1', senha: '111' },
     { usuario: 'cliente2', senha: '222' },
     { usuario: 'cliente3', senha: '333' },
@@ -124,6 +137,8 @@ const usuariosCadastrados = [
     { usuario: 'cliente20', senha: '202' }
 ];
 
+// ===== PLATAFORMAS E CONTAS =====
+// ⬇️ COLOQUE AQUI TODAS AS SUAS CONTAS E LINKS ⬇️
 const plataformas = [
     {
         nome: 'Spotify',
@@ -137,7 +152,7 @@ const plataformas = [
         tipo: 'link',
         contas: [
             { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' },
-            { link: 'https://www.canva.com/convite/789101' }
+            { link: 'https://www.canva.com/brand/join?token=SEU_NOVO_TOKEN_AQUI&referrer=team-invite' }
         ]
     },
     {
@@ -234,7 +249,23 @@ const plataformas = [
     }
 ];
 
+// ===== VERIFICA BLOQUEIO =====
+if (BLOQUEAR_ACESSO) {
+    // Mostra tela de bloqueio e esconde o login
+    document.getElementById('bloqueio').style.display = 'flex';
+    document.getElementById('login').style.display = 'none';
+} else {
+    document.getElementById('bloqueio').style.display = 'none';
+    document.getElementById('login').style.display = 'block';
+}
+
+// ===== FUNÇÕES =====
 function entrar() {
+    if (BLOQUEAR_ACESSO) {
+        alert('🔒 Acesso bloqueado! O app está em manutenção.');
+        return;
+    }
+
     var userDigitado = document.getElementById('user').value.trim();
     var passDigitado = document.getElementById('pass').value.trim();
 
@@ -284,22 +315,22 @@ function carregarPainel() {
             if(p.tipo === 'link') {
                 html += '<div class="linha">';
                 html += '<span class="label">Link:</span>';
-                html += '<span class="valor" id="link-' + Date.now() + '-' + Math.random() + '">' + c.link + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.link + '\')">Copiar</button>';
+                html += '<span class="valor">' + c.link + '</span>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.link.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
                 html += '<div class="linha">';
-                html += '<button onclick="abrirLink(\'' + c.link + '\')" class="btn-link">🔗 Abrir Link</button>';
+                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link">🔗 Abrir Link</button>';
                 html += '</div>';
             } else {
                 html += '<div class="linha">';
                 html += '<span class="label">Email:</span>';
                 html += '<span class="valor">' + c.email + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.email + '\')">Copiar</button>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.email.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
                 html += '<div class="linha">';
                 html += '<span class="label">Senha:</span>';
                 html += '<span class="valor">' + c.senha + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha + '\')">Copiar</button>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
             }
             html += '</div>';
@@ -311,11 +342,8 @@ function carregarPainel() {
     });
 }
 
-// Função específica para abrir links corretamente
 function abrirLink(url) {
-    // Verifica se a URL é válida
     if (url && url.startsWith('http')) {
-        // Abre em nova aba
         window.open(url, '_blank', 'noopener,noreferrer');
     } else {
         alert('Link inválido!');
@@ -323,9 +351,7 @@ function abrirLink(url) {
 }
 
 function copiar(texto) {
-    // Limpa caracteres especiais para evitar problemas
     var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
-    
     if(navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textoLimpo).then(function() {
             mostrarToast('Copiado!');
@@ -356,7 +382,7 @@ function mostrarToast(msg) {
     }, 2000);
 }
 
-// Event listener para tecla Enter nos campos de login
+// ===== EVENTOS =====
 document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('user').addEventListener('keypress', function(e) {
         if (e.key === 'Enter') {
@@ -370,6 +396,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// ===== ESTRELAS E NEVE =====
 var estrelasContainer = document.getElementById('estrelas');
 for (var i = 0; i < 120; i++) {
     var estrela = document.createElement('div');
