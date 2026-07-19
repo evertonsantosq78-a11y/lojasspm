@@ -36,9 +36,6 @@
         .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px;flex-wrap:wrap;gap:10px}
         .topo h1{color:#ff3366;font-size:22px}
         .topo .user{color:#aaa;font-size:14px}
-        .topo .botoes-topo{display:flex;gap:10px;flex-wrap:wrap}
-        .topo .atualizar-btn{background:#ffaa00;color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:bold}
-        .topo .atualizar-btn:hover{background:#ffcc00}
         .topo .sair{color:#ff4d4d;border:1px solid #ff4d4d;padding:6px 16px;border-radius:8px;cursor:pointer;background:transparent;font-weight:bold}
         .topo .sair:hover{background:#ff4d4d;color:#fff}
 
@@ -74,7 +71,7 @@
 <body>
 
 <div id="bloqueio" style="display:none">
-    <h1> Acesso Bloqueado</h1>
+    <h1>🔒 Acesso Bloqueado</h1>
     <p>Este aplicativo está em manutenção.<br>Por favor, aguarde a atualização das contas.</p>
     <p style="color:#666;font-size:14px;margin-top:30px">Entre em contato com o suporte para mais informações.</p>
 </div>
@@ -88,24 +85,21 @@
 </div>
 
 <div id="login">
-    <h1> Vênus</h1>
+    <h1>💎 Vênus</h1>
     <p class="sub">Loja de Streams</p>
     <input type="text" id="user" placeholder="Usuário" required>
     <input type="password" id="pass" placeholder="Senha" required>
-    <button onclick="entrar()"> Entrar</button>
+    <button onclick="entrar()">🔓 Entrar</button>
     <p style="margin-top:12px;font-size:11px;color:#555">Insira seus dados de acesso</p>
 </div>
 
 <div id="painel">
     <div class="topo">
         <div>
-            <h1> Loja Vênus</h1>
+            <h1>💎 Loja Vênus</h1>
             <span class="user" id="nomeUsuario">Olá, Cliente!</span>
         </div>
-        <div class="botoes-topo">
-            <button class="atualizar-btn" onclick="forcarAtualizacao()"> Atualizar Contas</button>
-            <button class="sair" onclick="sair()">Sair</button>
-        </div>
+        <button class="sair" onclick="sair()">Sair</button>
     </div>
 
     <div class="grid" id="gridPlataformas"></div>
@@ -142,7 +136,7 @@ const usuariosCadastrados = [
     { usuario: 'admin', senha: 'admin2026' }
 ];
 
-// ===== PLATAFORMAS E CONTAS =====
+// ===== PLATAFORMAS E CONTAS (COM ID E DISPONIVEL) =====
 const plataformas = [
     {
         nome: 'Spotify',
@@ -189,7 +183,7 @@ const plataformas = [
     {
         nome: 'Youcine',
         contas: [
-            { id: 'youcine_1', email: 'uyhskw8e77272@hotmail.com', senha: '0p9o8i7U', disponivel: true },
+            { id: 'youcine_1', email: 'youcine1@email.com', senha: 'senha123', disponivel: true },
             { id: 'youcine_2', email: 'youcine2@email.com', senha: 'senha456', disponivel: true },
             { id: 'youcine_3', email: 'youcine3@email.com', senha: 'senha789', disponivel: true }
         ],
@@ -204,7 +198,7 @@ const plataformas = [
     {
         nome: 'UniTV',
         contas: [
-            { id: 'unitv_1', email: 'uyhskw8e77272@hotmail.com', senha: '0p9o8i7U', disponivel: true },
+            { id: 'unitv_1', email: 'unitv1@email.com', senha: 'senha123', disponivel: true },
             { id: 'unitv_2', email: 'unitv2@email.com', senha: 'senha456', disponivel: true },
             { id: 'unitv_3', email: 'unitv3@email.com', senha: 'senha789', disponivel: true }
         ],
@@ -213,7 +207,7 @@ const plataformas = [
     {
         nome: 'Crunchyroll',
         contas: [
-            { id: 'crunchyroll_1', email: 'crunchyroll41@email.com', senha: 'senha54123', disponivel: true }
+            { id: 'crunchyroll_1', email: 'crunchyroll1@email.com', senha: 'senha123', disponivel: true }
         ],
         obs: 'Ativação na TV'
     },
@@ -253,43 +247,34 @@ const plataformas = [
     }
 ];
 
-// ===== FUNÇÃO PARA RECARREGAR O ESTADO DAS CONTAS =====
-function recarregarEstadoContas() {
+// ===== CARREGA CONTAS JÁ PEGAS =====
+function carregarEstadoContas() {
     try {
         const salvo = localStorage.getItem('contasPegas');
         if (salvo) {
             const pegas = JSON.parse(salvo);
             plataformas.forEach(p => {
                 p.contas.forEach(c => {
-                    c.disponivel = !pegas.includes(c.id);
-                });
-            });
-        } else {
-            // Se não tiver nada salvo, todas disponíveis
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    c.disponivel = true;
+                    if (pegas.includes(c.id)) {
+                        c.disponivel = false;
+                    }
                 });
             });
         }
-    } catch(e) {
-        console.log('Erro ao recarregar estado:', e);
-    }
+    } catch(e) {}
 }
-
-// ===== CARREGA CONTAS JÁ PEGAS =====
-recarregarEstadoContas();
+carregarEstadoContas();
 
 // ===== FUNÇÃO PEGAR CONTA =====
 function pegarConta(plataformaIdx, contaIdx) {
     const conta = plataformas[plataformaIdx].contas[contaIdx];
     
     if (!conta.disponivel) {
-        mostrarToast(' Esta conta já foi utilizada!', true);
+        mostrarToast('❌ Esta conta já foi utilizada!', true);
         return;
     }
 
-    if (!confirm(' Tem certeza que quer pegar esta conta?\n\nDepois de confirmar, ela será removida do painel permanentemente.')) {
+    if (!confirm('⚠️ Tem certeza que quer pegar esta conta?\n\nDepois de confirmar, ela será removida do painel permanentemente.')) {
         return;
     }
 
@@ -297,23 +282,12 @@ function pegarConta(plataformaIdx, contaIdx) {
 
     try {
         let pegas = JSON.parse(localStorage.getItem('contasPegas') || '[]');
-        if (!pegas.includes(conta.id)) {
-            pegas.push(conta.id);
-            localStorage.setItem('contasPegas', JSON.stringify(pegas));
-        }
-    } catch(e) {
-        console.log('Erro ao salvar:', e);
-    }
+        pegas.push(conta.id);
+        localStorage.setItem('contasPegas', JSON.stringify(pegas));
+    } catch(e) {}
 
     carregarPainel();
-    mostrarToast(' Conta pega com sucesso!');
-}
-
-// ===== FUNÇÃO FORÇAR ATUALIZAÇÃO =====
-function forcarAtualizacao() {
-    recarregarEstadoContas();
-    carregarPainel();
-    mostrarToast(' Contas atualizadas!');
+    mostrarToast('✅ Conta pega com sucesso!');
 }
 
 // ===== VERIFICA BLOQUEIO =====
@@ -346,7 +320,7 @@ function verificarLoginSalvo() {
 // ===== FUNÇÕES =====
 function entrar() {
     if (BLOQUEAR_ACESSO) {
-        alert(' Acesso bloqueado! O app está em manutenção.');
+        alert('🔒 Acesso bloqueado! O app está em manutenção.');
         return;
     }
 
@@ -400,14 +374,14 @@ function carregarPainel() {
         html += '<span class="badge">Ativo</span>';
 
         if(p.obs) {
-            html += '<div class="obs"> ' + p.obs + '</div>';
+            html += '<div class="obs">⚠️ ' + p.obs + '</div>';
         }
 
         html += '<div class="contas">';
         p.contas.forEach(function(c, cIdx) {
             if (!c.disponivel) {
                 html += '<div class="conta-usada">';
-                html += ' Conta já utilizada';
+                html += '❌ Conta já utilizada';
                 html += '</div>';
                 return;
             }
@@ -420,7 +394,7 @@ function carregarPainel() {
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.link.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
                 html += '<div class="linha">';
-                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link"> Abrir Link</button>';
+                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link">🔗 Abrir Link</button>';
                 html += '</div>';
             } else {
                 html += '<div class="linha">';
@@ -434,7 +408,7 @@ function carregarPainel() {
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha.replace(/'/g, "\\'") + '\')">Copiar</button>';
                 html += '</div>';
             }
-            html += '<button class="btn-pegar" onclick="pegarConta(' + pIdx + ',' + cIdx + ')"> Pegar Conta</button>';
+            html += '<button class="btn-pegar" onclick="pegarConta(' + pIdx + ',' + cIdx + ')">🔓 Pegar Conta</button>';
             html += '</div>';
         });
         html += '</div>';
@@ -446,7 +420,7 @@ function carregarPainel() {
     if (!temContaDisponivel) {
         grid.innerHTML = `
             <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:rgba(20,20,30,0.85);border-radius:16px;border:1px solid rgba(255,51,102,0.2)">
-                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px"> Nenhuma conta disponível</h2>
+                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px">🔄 Nenhuma conta disponível</h2>
                 <p style="color:#888;font-size:16px">Todas as contas foram utilizadas.<br>Aguarde o administrador adicionar novas contas.</p>
             </div>
         `;
@@ -465,7 +439,7 @@ function copiar(texto) {
     var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
     if(navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(textoLimpo).then(function() {
-            mostrarToast(' Copiado!');
+            mostrarToast('📋 Copiado!');
         }).catch(function() {
             copiarFallback(textoLimpo);
         });
@@ -481,7 +455,7 @@ function copiarFallback(texto) {
     input.select();
     document.execCommand('copy');
     document.body.removeChild(input);
-    mostrarToast(' Copiado!');
+    mostrarToast('📋 Copiado!');
 }
 
 function mostrarToast(msg, erro) {
@@ -531,7 +505,7 @@ for (var i = 0; i < 120; i++) {
 }
 
 var neveContainer = document.getElementById('neve');
-var flocos = ['', '', '', '', '•'];
+var flocos = ['❄', '❅', '❆', '✦', '•'];
 for (var i = 0; i < 80; i++) {
     var floco = document.createElement('div');
     floco.className = 'floco';
