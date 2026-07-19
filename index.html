@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loja Vênus</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box}
+        body{font-family:'Segoe UI',sans-serif;height:100vh;overflow:hidden;background:#0a0a0f;display:flex;justify-content:center;align-items:center}
+
+        /* ===== FUNDO ===== */
+        .fundo{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,#1a0a0a,#0a0a0f);z-index:0;overflow:hidden}
+
+        /* ===== LUZES ===== */
+        .luz{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.3;animation:piscar 3s infinite alternate ease-in-out}
+        .luz1{width:300px;height:300px;background:#ff0040;top:10%;left:-5%;animation-delay:0s}
+        .luz2{width:400px;height:400px;background:#ff0040;bottom:10%;right:-10%;animation-delay:1.5s}
+        .luz3{width:200px;height:200px;background:#ff0040;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0.8s}
+        @keyframes piscar{0%{opacity:0.1;transform:scale(0.8)}100%{opacity:0.5;transform:scale(1.2)}}
+
+        /* ===== NEVE ===== */
+        .neve{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
+        .floco{position:absolute;top:-20px;color:#fff;font-size:14px;opacity:0.8;animation:cair linear infinite;text-shadow:0 0 10px rgba(255,255,255,0.6)}
+        @keyframes cair{0%{transform:translateY(-20px) rotate(0deg);opacity:0.8}100%{transform:translateY(110vh) rotate(720deg);opacity:0.2}}
+
+        /* ===== ESTRELAS ===== */
+        .estrela{position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:brilhar 2s infinite alternate ease-in-out;z-index:1}
+        @keyframes brilhar{0%{opacity:0.2;transform:scale(0.5)}100%{opacity:1;transform:scale(1.3)}}
+
+        /* ===== TELA DE LOGIN ===== */
+        #login{position:relative;z-index:10;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);padding:45px 35px;border-radius:20px;border:1px solid rgba(255,51,102,0.3);box-shadow:0 0 60px rgba(255,0,60,0.15);width:360px;text-align:center;animation:fadeIn 1s ease}
+        #login h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#ff3366,#ff6699);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;letter-spacing:2px}
+        #login .sub{color:#aaa;font-size:13px;margin-bottom:25px;letter-spacing:1px}
+        #login input{width:100%;padding:14px 16px;margin:10px 0;border:1px solid rgba(255,255,255,0.1);border-radius:12px;background:rgba(255,255,255,0.04);color:#fff;font-size:14px;outline:none;transition:0.3s}
+        #login input:focus{border-color:#ff3366;background:rgba(255,51,102,0.06);box-shadow:0 0 20px rgba(255,51,102,0.05)}
+        #login input::placeholder{color:#666}
+        #login button{width:100%;padding:14px;margin-top:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff3366,#cc0055);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;box-shadow:0 0 30px rgba(255,51,102,0.2)}
+        #login button:hover{transform:scale(1.02);box-shadow:0 0 50px rgba(255,51,102,0.35)}
+        @keyframes fadeIn{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
+
+        /* ===== PAINEL ===== */
+        #painel{display:none;position:relative;z-index:10;width:100%;max-width:1200px;padding:20px;max-height:100vh;overflow-y:auto}
+        .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px}
+        .topo h1{color:#ff3366;font-size:22px}
+        .topo .user{color:#aaa;font-size:14px}
+        .topo .sair{color:#ff4d4d;border:1px solid #ff4d4d;padding:6px 16px;border-radius:8px;cursor:pointer;background:transparent;font-weight:bold}
+        .topo .sair:hover{background:#ff4d4d;color:#fff}
+
+        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:15px}
+        .card{background:rgba(20,20,30,0.85);backdrop-filter:blur(10px);padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.05);transition:0.3s}
+        .card:hover{border-color:rgba(255,51,102,0.2)}
+        .card h3{color:#fff;font-size:16px;margin-bottom:8px}
+        .card .badge{background:#22c55e;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
+        .card .obs{color:#ffaa00;font-size:12px;padding:6px 10px;background:rgba(255,170,0,0.1);border-radius:6px;margin:8px 0}
+        .card .conta{background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;margin:6px 0}
+        .card .conta .linha{display:flex;align-items:center;gap:8px;padding:2px 0;flex-wrap:wrap}
+        .card .conta .label{color:#888;font-size:11px;min-width:40px}
+        .card .conta .valor{color:#fff;font-size:13px;font-weight:bold;word-break:break-all;flex:1}
+        .card .btn-copiar{background:#2e2e33;color:#fff;border:none;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:10px}
+        .card .btn-copiar:hover{background:#22c55e}
+        .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px}
+        .card .btn-link:hover{background:#cc0055}
+
+        .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
+
+        @media(max-width:600px){#login{width:90%;padding:30px 20px}.grid{grid-template-columns:1fr}}
+    </style>
+</head>
+<body>
+
+<div class="fundo">
+    <div class="luz luz1"></div>
+    <div class="luz luz2"></div>
+    <div class="luz luz3"></div>
+    <div id="estrelas"></div>
+    <div id="neve" class="neve"></div>
+</div>
+
+<div id="login">
+    <h1>💎 Vênus</h1>
+    <p class="sub">Loja de Streams</p>
+    <input type="text" id="user" placeholder="Usuário" required>
+    <input type="password" id="pass" placeholder="Senha" required>
+    <button onclick="entrar()">🔓 Entrar</button>
+    <p style="margin-top:12px;font-size:11px;color:#555">Insira seus dados de acesso</p>
+</div>
+
+<div id="painel">
+    <div class="topo">
+        <div>
+            <h1>💎 Loja Vênus</h1>
+            <span class="user" id="nomeUsuario">Olá, Cliente!</span>
+        </div>
+        <button class="sair" onclick="sair()">Sair</button>
+    </div>
+
+    <div class="grid" id="gridPlataformas"></div>
+</div>
+
+<div id="toast" class="toast">Copiado!</div>
+
+<script>
+const usuariosCadastrados = [
+    { usuario: 'admin', senha: '123' },
+    { usuario: 'cliente1', senha: '111' },
+    { usuario: 'cliente2', senha: '222' },
+    { usuario: 'cliente3', senha: '333' },
+    { usuario: 'cliente4', senha: '444' },
+    { usuario: 'cliente5', senha: '555' },
+    { usuario: 'cliente6', senha: '666' },
+    { usuario: 'cliente7', senha: '777' },
+    { usuario: 'cliente8', senha: '888' },
+    { usuario: 'cliente9', senha: '999' },
+    { usuario: 'cliente10', senha: '101' },
+    { usuario: 'cliente11', senha: '112' },
+    { usuario: 'cliente12', senha: '123' },
+    { usuario: 'cliente13', senha: '134' },
+    { usuario: 'cliente14', senha: '145' },
+    { usuario: 'cliente15', senha: '156' },
+    { usuario: 'cliente16', senha: '167' },
+    { usuario: 'cliente17', senha: '178' },
+    { usuario: 'cliente18', senha: '189' },
+    { usuario: 'cliente19', senha: '190' },
+    { usuario: 'cliente20', senha: '202' }
+];
+
+const plataformas = [
+    {
+        nome: 'Spotify',
+        contas: [
+            { email: 'spotify1@email.com', senha: 'senha123' },
+            { email: 'spotify2@email.com', senha: 'senha456' }
+        ]
+    },
+    {
+        nome: 'Canva',
+        tipo: 'link',
+        contas: [
+            { link: 'https://www.canva.com/convite/123456' },
+            { link: 'https://www.canva.com/convite/789101' }
+        ]
+    },
+    {
+        nome: 'Amazon Prime',
+        contas: [
+            { email: 'prime1@email.com', senha: 'senha123' }
+        ],
+        obs: 'Adicionar de 7 dias (tela)'
+    },
+    {
+        nome: 'Max (HBO)',
+        contas: [
+            { email: 'hbomax1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'Globoplay',
+        contas: [
+            { email: 'globoplay1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'Netflix (TV)',
+        tipo: 'link',
+        contas: [
+            { link: 'https://www.netflix.com/convite/123456' }
+        ],
+        obs: 'Cliente tem direito a 3 ativações na TV'
+    },
+    {
+        nome: 'Youcine',
+        contas: [
+            { email: 'youcine1@email.com', senha: 'senha123' },
+            { email: 'youcine2@email.com', senha: 'senha456' },
+            { email: 'youcine3@email.com', senha: 'senha789' }
+        ],
+        obs: 'Cliente tem direito a 3 contas'
+    },
+    {
+        nome: 'YouTube',
+        contas: [
+            { email: 'youtube1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'UniTV',
+        contas: [
+            { email: 'unitv1@email.com', senha: 'senha123' },
+            { email: 'unitv2@email.com', senha: 'senha456' },
+            { email: 'unitv3@email.com', senha: 'senha789' }
+        ],
+        obs: 'Cliente tem direito a 3 contas'
+    },
+    {
+        nome: 'Crunchyroll',
+        contas: [
+            { email: 'crunchyroll1@email.com', senha: 'senha123' }
+        ],
+        obs: 'Ativação na TV'
+    },
+    {
+        nome: 'Deezer Individual',
+        contas: [
+            { email: 'deezer1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'Paramount+',
+        contas: [
+            { email: 'paramount1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'Deezer Família',
+        contas: [
+            { email: 'deezerfamilia1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'YouTube Família',
+        contas: [
+            { email: 'youtubefamilia1@email.com', senha: 'senha123' }
+        ]
+    },
+    {
+        nome: 'Netflix Celular',
+        tipo: 'link',
+        contas: [
+            { link: 'https://www.netflix.com/convite/789101' },
+            { link: 'https://www.netflix.com/convite/112131' },
+            { link: 'https://www.netflix.com/convite/415161' }
+        ],
+        obs: 'Cliente tem direito a 3 contas no celular'
+    }
+];
+
+function entrar() {
+    var userDigitado = document.getElementById('user').value.trim();
+    var passDigitado = document.getElementById('pass').value.trim();
+
+    if(userDigitado === '' || passDigitado === '') {
+        alert('Por favor, digite o usuário e a senha!');
+        return;
+    }
+
+    var usuarioValido = usuariosCadastrados.find(function(u) {
+        return u.usuario.toLowerCase() === userDigitado.toLowerCase() && u.senha === passDigitado;
+    });
+
+    if (usuarioValido) {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('painel').style.display = 'block';
+        document.getElementById('nomeUsuario').textContent = 'Olá, ' + userDigitado + '!';
+        carregarPainel();
+    } else {
+        alert('Usuário ou senha incorretos!');
+    }
+}
+
+function sair() {
+    document.getElementById('login').style.display = 'block';
+    document.getElementById('painel').style.display = 'none';
+    document.getElementById('user').value = '';
+    document.getElementById('pass').value = '';
+}
+
+function carregarPainel() {
+    var grid = document.getElementById('gridPlataformas');
+    grid.innerHTML = '';
+    plataformas.forEach(function(p) {
+        var card = document.createElement('div');
+        card.className = 'card';
+
+        var html = '<h3>' + p.nome + '</h3>';
+        html += '<span class="badge">Ativo</span>';
+
+        if(p.obs) {
+            html += '<div class="obs">⚠️ ' + p.obs + '</div>';
+        }
+
+        html += '<div class="contas">';
+        p.contas.forEach(function(c) {
+            html += '<div class="conta">';
+            if(p.tipo === 'link') {
+                html += '<div class="linha">';
+                html += '<span class="label">Link:</span>';
+                html += '<span class="valor">' + c.link + '</span>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.link + '\')">Copiar</button>';
+                html += '</div>';
+                html += '<div class="linha">';
+                html += '<a href="' + c.link + '" target="_blank" class="btn-link">Abrir Link</a>';
+                html += '</div>';
+            } else {
+                html += '<div class="linha">';
+                html += '<span class="label">Email:</span>';
+                html += '<span class="valor">' + c.email + '</span>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.email + '\')">Copiar</button>';
+                html += '</div>';
+                html += '<div class="linha">';
+                html += '<span class="label">Senha:</span>';
+                html += '<span class="valor">' + c.senha + '</span>';
+                html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha + '\')">Copiar</button>';
+                html += '</div>';
+            }
+            html += '</div>';
+        });
+        html += '</div>';
+
+        card.innerHTML = html;
+        grid.appendChild(card);
+    });
+}
+
+function copiar(texto) {
+    if(navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(texto).then(function() {
+            mostrarToast('Copiado!');
+        }).catch(function() {
+            copiarFallback(texto);
+        });
+    } else {
+        copiarFallback(texto);
+    }
+}
+
+function copiarFallback(texto) {
+    var input = document.createElement('input');
+    input.value = texto;
+    document.body.appendChild(input);
+    input.select();
+    document.execCommand('copy');
+    document.body.removeChild(input);
+    mostrarToast('Copiado!');
+}
+
+function mostrarToast(msg) {
+    var toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.style.display = 'block';
+    setTimeout(function() {
+        toast.style.display = 'none';
+    }, 2000);
+}
+
+var estrelasContainer = document.getElementById('estrelas');
+for (var i = 0; i < 120; i++) {
+    var estrela = document.createElement('div');
+    estrela.className = 'estrela';
+    estrela.style.left = Math.random() * 100 + '%';
+    estrela.style.top = Math.random() * 100 + '%';
+    estrela.style.width = (Math.random() * 4 + 2) + 'px';
+    estrela.style.height = estrela.style.width;
+    estrela.style.animationDelay = (Math.random() * 3) + 's';
+    estrela.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
+    estrelasContainer.appendChild(estrela);
+}
+
+var neveContainer = document.getElementById('neve');
+var flocos = ['❄', '❅', '❆', '✦', '•'];
+for (var i = 0; i < 80; i++) {
+    var floco = document.createElement('div');
+    floco.className = 'floco';
+    floco.textContent = flocos[Math.floor(Math.random() * flocos.length)];
+    floco.style.left = Math.random() * 100 + '%';
+    floco.style.fontSize = (Math.random() * 12 + 8) + 'px';
+    floco.style.animationDuration = (Math.random() * 8 + 6) + 's';
+    floco.style.animationDelay = (Math.random() * 10) + 's';
+    floco.style.opacity = Math.random() * 0.6 + 0.3;
+    neveContainer.appendChild(floco);
+}
+</script>
+</body>
+</html>
