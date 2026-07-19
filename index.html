@@ -58,7 +58,7 @@
         .card .conta .valor{color:#fff;font-size:13px;font-weight:bold;word-break:break-all;flex:1}
         .card .btn-copiar{background:#2e2e33;color:#fff;border:none;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:10px}
         .card .btn-copiar:hover{background:#22c55e}
-        .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px}
+        .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px;border:none;cursor:pointer}
         .card .btn-link:hover{background:#cc0055}
 
         .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
@@ -136,7 +136,7 @@ const plataformas = [
         nome: 'Canva',
         tipo: 'link',
         contas: [
-            { link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite' },
+            { link: 'https://www.canva.com/convite/123456' },
             { link: 'https://www.canva.com/convite/789101' }
         ]
     },
@@ -284,11 +284,11 @@ function carregarPainel() {
             if(p.tipo === 'link') {
                 html += '<div class="linha">';
                 html += '<span class="label">Link:</span>';
-                html += '<span class="valor">' + c.link + '</span>';
+                html += '<span class="valor" id="link-' + Date.now() + '-' + Math.random() + '">' + c.link + '</span>';
                 html += '<button class="btn-copiar" onclick="copiar(\'' + c.link + '\')">Copiar</button>';
                 html += '</div>';
                 html += '<div class="linha">';
-                html += '<a href="' + c.link + '" target="_blank" class="btn-link">Abrir Link</a>';
+                html += '<button onclick="abrirLink(\'' + c.link + '\')" class="btn-link">🔗 Abrir Link</button>';
                 html += '</div>';
             } else {
                 html += '<div class="linha">';
@@ -311,15 +311,29 @@ function carregarPainel() {
     });
 }
 
+// Função específica para abrir links corretamente
+function abrirLink(url) {
+    // Verifica se a URL é válida
+    if (url && url.startsWith('http')) {
+        // Abre em nova aba
+        window.open(url, '_blank', 'noopener,noreferrer');
+    } else {
+        alert('Link inválido!');
+    }
+}
+
 function copiar(texto) {
+    // Limpa caracteres especiais para evitar problemas
+    var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
+    
     if(navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(texto).then(function() {
+        navigator.clipboard.writeText(textoLimpo).then(function() {
             mostrarToast('Copiado!');
         }).catch(function() {
-            copiarFallback(texto);
+            copiarFallback(textoLimpo);
         });
     } else {
-        copiarFallback(texto);
+        copiarFallback(textoLimpo);
     }
 }
 
@@ -341,6 +355,20 @@ function mostrarToast(msg) {
         toast.style.display = 'none';
     }, 2000);
 }
+
+// Event listener para tecla Enter nos campos de login
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('user').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            document.getElementById('pass').focus();
+        }
+    });
+    document.getElementById('pass').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            entrar();
+        }
+    });
+});
 
 var estrelasContainer = document.getElementById('estrelas');
 for (var i = 0; i < 120; i++) {
