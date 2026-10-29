@@ -1,569 +1,472 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Loja Vênus</title>
-    <style>
-        *{margin:0;padding:0;box-sizing:border-box}
-        body{font-family:'Segoe UI',sans-serif;height:100vh;overflow:hidden;background:#0a0a0f;display:flex;justify-content:center;align-items:center}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Créditos Fines PJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#EEF1EF;--surface:#FFFFFF;--ink:#12262C;--muted:#566A6F;--line:#D3DCDA;--brand:#0E5F57;--brand-ink:#FFFFFF;--panel:#12262C;--panel-ink:#F2F6F4;--panel-muted:#9DB3B0;--accent:#F0B429;--warn:#9A4A06;--warn-bg:#FDF0DC;--err:#B42318;--ok:#0E6B4F;color-scheme:light;
+--head:"Bricolage Grotesque",Georgia,serif;--body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0B1517;--surface:#13222A;--ink:#E6EEEC;--muted:#92A7A4;--line:#25383D;--brand:#4FC3B3;--brand-ink:#08201D;--panel:#1B3138;--panel-ink:#F2F6F4;--panel-muted:#9DB3B0;--warn:#F2B766;--warn-bg:#2E2412;--err:#FF8A7A;--ok:#5FD3A8;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0B1517;--surface:#13222A;--ink:#E6EEEC;--muted:#92A7A4;--line:#25383D;--brand:#4FC3B3;--brand-ink:#08201D;--panel:#1B3138;--panel-ink:#F2F6F4;--panel-muted:#9DB3B0;--warn:#F2B766;--warn-bg:#2E2412;--err:#FF8A7A;--ok:#5FD3A8;color-scheme:dark}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*,*::before,*::after{box-sizing:inherit}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 var(--body);padding-bottom:84px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:1080px;margin:0 auto;padding:24px 16px}
+h1{font:700 clamp(1.7rem,4.5vw,2.6rem)/1.1 var(--head);margin:0 0 8px;letter-spacing:-.02em}
+.lead{color:var(--muted);margin:0 0 24px;max-width:52ch}
+.brand{display:flex;align-items:center;gap:14px;margin-bottom:24px}
+.brand img{display:block;flex:none;width:clamp(56px,14vw,72px);height:auto;background:#fff;border-radius:10px;padding:4px}
+.next{margin:0 0 16px;padding-left:20px}
+.next li{margin-bottom:6px}
+.brand b{font:700 clamp(1.25rem,4vw,1.6rem)/1 var(--head);letter-spacing:-.01em}
+.brand i{font:600 .85rem/1 var(--head);font-style:normal;background:var(--accent);color:#2A1D00;border-radius:6px;padding:5px 7px;margin-left:8px;vertical-align:middle}
+.sim{width:100%;margin-top:20px;background:var(--brand);color:var(--brand-ink);padding:14px 16px;font-size:1rem}
+.sum{display:block;width:100%;margin-top:10px;min-height:150px;background:transparent;color:var(--panel-ink);border:1px solid rgba(255,255,255,.35);border-radius:10px;padding:10px;font:.85rem/1.5 var(--body);resize:vertical}
+.sum[hidden]{display:none}
+.left{min-width:0}
+.steps{display:flex;gap:8px;list-style:none;margin:0 0 16px;padding:0}
+.steps li{flex:1;display:flex;align-items:center;gap:8px;font-weight:600;font-size:.9rem;color:var(--muted);padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.steps li span{display:grid;place-items:center;width:24px;height:24px;border-radius:50%;border:1.5px solid currentColor;font-size:.8rem;flex:none}
+.steps li.on{color:var(--ink);border-color:var(--brand);box-shadow:inset 0 0 0 1px var(--brand)}
+.steps li.on span{background:var(--brand);color:var(--brand-ink);border-color:var(--brand)}
+.steps li.done{color:var(--ok)}
+.steps li.done span{background:var(--ok);color:var(--surface);border-color:var(--ok)}
+@media (max-width:520px){.steps li{flex-direction:column;gap:4px;text-align:center;padding:8px 4px;font-size:.78rem}}
+.card h2{font:700 1.5rem/1.15 var(--head);margin:0 0 6px}
+.card .intro{color:var(--muted);margin:0 0 20px}
+.chk{display:flex;gap:10px;align-items:flex-start;cursor:pointer}
+.chk input{width:20px;height:20px;margin-top:2px;accent-color:var(--brand);flex:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.go{background:var(--brand);color:var(--brand-ink);flex:1;min-width:170px;padding:14px 16px;font-size:1rem;text-align:center;text-decoration:none;border-radius:10px;font-weight:600}
+.go[hidden]{display:none}
+.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.card[hidden]{display:none}
+.proto{font:700 1.3rem var(--head);letter-spacing:.02em}
+.sum2{display:block;width:100%;min-height:280px;background:var(--bg);color:var(--ink);border:1px solid var(--line);border-radius:10px;padding:12px;font:.9rem/1.5 var(--body);margin:14px 0;resize:vertical}
+.alert{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:.9rem}
+.grid{display:grid;gap:20px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px}
+fieldset{border:0;margin:0 0 20px;padding:0;min-width:0}
+legend,label.t{font-weight:600;font-size:.95rem;margin-bottom:8px;display:block;padding:0}
+.seg{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.seg input,.opt input{position:absolute;opacity:0;pointer-events:none}
+.seg label{padding:12px 8px;text-align:center;cursor:pointer;font-weight:600;color:var(--muted);transition:background .15s,color .15s}
+.seg input:checked+label{background:var(--brand);color:var(--brand-ink)}
+.seg input:focus-visible+label,.opt input:focus-visible+label{outline:3px solid var(--accent);outline-offset:-3px}
+.field{margin-bottom:20px}
+input[type=text],select{width:100%;padding:12px 14px;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:10px}
+input[type=text]:focus,select:focus{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--brand)}
+.money{display:flex;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding-left:14px}
+.money:focus-within{outline:3px solid var(--accent);outline-offset:1px;border-color:var(--brand)}
+.money span{color:var(--muted);font-weight:600}
+.money input{border:0;background:transparent;font:600 1.5rem var(--head);outline:none!important}
+input[type=range]{width:100%;accent-color:var(--brand);margin:12px 0 0}
+.rng{display:flex;justify-content:space-between;color:var(--muted);font-size:.8rem}
+.msg{font-size:.85rem;margin-top:6px;min-height:1.2em;color:var(--muted)}
+.msg.err{color:var(--err)}.msg.ok{color:var(--ok)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt label{display:block;border:1px solid var(--line);border-radius:10px;padding:12px;cursor:pointer;height:100%}
+.opt label small{display:block;color:var(--muted);font-weight:400;margin-top:2px}
+.opt input:checked+label{border-color:var(--brand);box-shadow:inset 0 0 0 2px var(--brand)}
+.opt b{font-weight:600}
+.panel{background:var(--panel);color:var(--panel-ink);border-radius:14px;padding:24px}
+.panel h2{font:500 1rem var(--body);color:var(--panel-muted);margin:0}
+.big{font:700 clamp(2.4rem,8vw,3.4rem)/1.05 var(--head);letter-spacing:-.03em;margin:4px 0 2px}
+.sub{color:var(--panel-muted);font-size:.9rem;margin:0 0 20px}
+dl{margin:0;display:grid;gap:0}
+dl div{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-top:1px solid rgba(255,255,255,.14)}
+dt{color:var(--panel-muted)}dd{margin:0;font-weight:600;text-align:right}
+.warn{background:var(--warn-bg);color:var(--warn);border-radius:10px;padding:10px 12px;font-size:.9rem;margin-top:16px}
+.warn[hidden]{display:none}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:20px}
+button{font:600 .95rem var(--body);padding:12px 16px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.b1{background:var(--accent);color:#2A1D00}
+.b2{background:transparent;color:var(--panel-ink);border-color:rgba(255,255,255,.35)}
+.tbl{margin-top:20px;overflow-x:auto;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.tbl[hidden]{display:none}
+table{border-collapse:collapse;width:100%;min-width:520px;font-variant-numeric:tabular-nums}
+th,td{padding:10px 14px;text-align:right;border-bottom:1px solid var(--line)}
+th:first-child,td:first-child{text-align:left}
+th{font-weight:600;color:var(--muted);font-size:.85rem;position:sticky;top:0;background:var(--surface)}
+.note{color:var(--muted);font-size:.82rem;margin-top:20px;max-width:80ch}
+.bar{position:fixed;left:0;right:0;bottom:0;background:var(--panel);color:var(--panel-ink);display:flex;justify-content:space-between;align-items:center;padding:12px 16px calc(12px + env(safe-area-inset-bottom,0px));z-index:5;cursor:pointer}
+.bar strong{font:700 1.3rem var(--head)}
+@media (min-width:900px){.grid{grid-template-columns:1fr 420px;align-items:start}.panel{position:sticky;top:16px}.bar{display:none}body{padding-bottom:0}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
-        .fundo{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,#1a0a0a,#0a0a0f);z-index:0;overflow:hidden}
-        .luz{position:absolute;border-radius:50%;filter:blur(60px);opacity:0.3;animation:piscar 3s infinite alternate ease-in-out}
-        .luz1{width:300px;height:300px;background:#ff0040;top:10%;left:-5%;animation-delay:0s}
-        .luz2{width:400px;height:400px;background:#ff0040;bottom:10%;right:-10%;animation-delay:1.5s}
-        .luz3{width:200px;height:200px;background:#ff0040;top:50%;left:50%;transform:translate(-50%,-50%);animation-delay:0.8s}
-        @keyframes piscar{0%{opacity:0.1;transform:scale(0.8)}100%{opacity:0.5;transform:scale(1.2)}}
+.loadOverlay{position:fixed;inset:0;background:rgba(10,20,25,.88);display:flex;align-items:center;justify-content:center;z-index:100;padding:20px;backdrop-filter:blur(4px)}
+.loadOverlay[hidden]{display:none}
+.loadCard{background:var(--surface);border-radius:16px;padding:36px 28px;max-width:380px;width:100%;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,.45);animation:pop .3s ease}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.spinner{width:56px;height:56px;margin:0 auto 18px;border:5px solid var(--line);border-top-color:var(--brand);border-radius:50%;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loadCard h3{font:700 1.25rem/1.25 var(--head);margin:0 0 6px;color:var(--ink)}
+.loadCount{font:700 3.2rem/1 var(--head);color:var(--brand);margin:10px 0 4px;font-variant-numeric:tabular-nums}
+.loadTxt{color:var(--muted);font-size:.9rem;margin:0}
+.loadBar{height:6px;background:var(--line);border-radius:3px;margin-top:18px;overflow:hidden}
+.loadBar i{display:block;height:100%;width:0%;background:var(--brand);border-radius:3px;transition:width 1s linear}
+.approved{background:var(--ok);color:#fff;border-radius:12px;padding:18px 14px;text-align:center;margin-bottom:18px;font:700 1.5rem/1.1 var(--head);letter-spacing:.02em;animation:pop .4s ease}
+.approved small{display:block;font:500 .9rem/1.4 var(--body);opacity:.92;margin-top:6px;font-weight:500}
 
-        .neve{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1}
-        .floco{position:absolute;top:-20px;color:#fff;font-size:14px;opacity:0.8;animation:cair linear infinite;text-shadow:0 0 10px rgba(255,255,255,0.6)}
-        @keyframes cair{0%{transform:translateY(-20px) rotate(0deg);opacity:0.8}100%{transform:translateY(110vh) rotate(720deg);opacity:0.2}}
-
-        .estrela{position:absolute;width:4px;height:4px;background:#fff;border-radius:50%;box-shadow:0 0 8px rgba(255,255,255,0.8);animation:brilhar 2s infinite alternate ease-in-out;z-index:1}
-        @keyframes brilhar{0%{opacity:0.2;transform:scale(0.5)}100%{opacity:1;transform:scale(1.3)}}
-
-        #login{position:relative;z-index:10;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);padding:45px 35px;border-radius:20px;border:1px solid rgba(255,51,102,0.3);box-shadow:0 0 60px rgba(255,0,60,0.15);width:360px;text-align:center;animation:fadeIn 1s ease}
-        #login h1{font-size:32px;font-weight:700;background:linear-gradient(135deg,#ff3366,#ff6699);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:8px;letter-spacing:2px}
-        #login .sub{color:#aaa;font-size:13px;margin-bottom:25px;letter-spacing:1px}
-        #login input{width:100%;padding:14px 16px;margin:10px 0;border:1px solid rgba(255,255,255,0.1);border-radius:12px;background:rgba(255,255,255,0.04);color:#fff;font-size:14px;outline:none;transition:0.3s}
-        #login input:focus{border-color:#ff3366;background:rgba(255,51,102,0.06);box-shadow:0 0 20px rgba(255,51,102,0.05)}
-        #login input::placeholder{color:#666}
-        #login button{width:100%;padding:14px;margin-top:16px;border:none;border-radius:12px;background:linear-gradient(135deg,#ff3366,#cc0055);color:#fff;font-weight:700;font-size:16px;cursor:pointer;transition:0.3s;box-shadow:0 0 30px rgba(255,51,102,0.2)}
-        #login button:hover{transform:scale(1.02);box-shadow:0 0 50px rgba(255,51,102,0.35)}
-        @keyframes fadeIn{0%{opacity:0;transform:scale(0.9)}100%{opacity:1;transform:scale(1)}}
-
-        #painel{display:none;position:relative;z-index:10;width:100%;max-width:1200px;padding:20px;max-height:100vh;overflow-y:auto}
-        .topo{display:flex;justify-content:space-between;align-items:center;padding:15px 20px;background:rgba(20,20,30,0.85);backdrop-filter:blur(15px);border-radius:16px;border:1px solid rgba(255,51,102,0.2);margin-bottom:20px;flex-wrap:wrap;gap:10px}
-        .topo h1{color:#ff3366;font-size:22px}
-        .topo .user{color:#aaa;font-size:14px}
-        .topo .botoes-topo{display:flex;gap:10px;flex-wrap:wrap}
-        .topo .atualizar-btn{background:#ffaa00;color:#000;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-weight:bold}
-        .topo .atualizar-btn:hover{background:#ffcc00}
-        .topo .sair{color:#ff4d4d;border:1px solid #ff4d4d;padding:6px 16px;border-radius:8px;cursor:pointer;background:transparent;font-weight:bold}
-        .topo .sair:hover{background:#ff4d4d;color:#fff}
-
-        .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:15px}
-        .card{background:rgba(20,20,30,0.85);backdrop-filter:blur(10px);padding:20px;border-radius:16px;border:1px solid rgba(255,255,255,0.05);transition:0.3s}
-        .card:hover{border-color:rgba(255,51,102,0.2)}
-        .card h3{color:#fff;font-size:16px;margin-bottom:8px}
-        .card .badge{background:#22c55e;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
-        .card .badge-usada{background:#ff4d4d;color:#fff;padding:2px 10px;border-radius:4px;font-size:10px;display:inline-block}
-        .card .obs{color:#ffaa00;font-size:12px;padding:6px 10px;background:rgba(255,170,0,0.1);border-radius:6px;margin:8px 0}
-        .card .conta{background:rgba(255,255,255,0.04);padding:10px;border-radius:8px;margin:6px 0;position:relative}
-        .card .conta .linha{display:flex;align-items:center;gap:8px;padding:2px 0;flex-wrap:wrap}
-        .card .conta .label{color:#888;font-size:11px;min-width:40px}
-        .card .conta .valor{color:#fff;font-size:13px;font-weight:bold;word-break:break-all;flex:1}
-        .card .btn-copiar{background:#2e2e33;color:#fff;border:none;padding:2px 10px;border-radius:4px;cursor:pointer;font-size:10px}
-        .card .btn-copiar:hover{background:#22c55e}
-        .card .btn-link{display:inline-block;background:#ff3366;color:#fff;padding:3px 12px;border-radius:4px;text-decoration:none;font-size:11px;border:none;cursor:pointer}
-        .card .btn-link:hover{background:#cc0055}
-        .card .btn-pegar{background:#ff3366;color:#fff;border:none;padding:5px 15px;border-radius:6px;cursor:pointer;font-size:12px;font-weight:bold;margin-top:5px;width:100%}
-        .card .btn-pegar:hover{background:#cc0055}
-        .card .conta-usada{background:rgba(255,0,0,0.1);border:1px solid rgba(255,0,0,0.2);padding:10px;border-radius:8px;margin:6px 0;text-align:center;color:#ff4d4d}
-
-        .toast{position:fixed;bottom:20px;right:20px;background:#22c55e;color:#fff;padding:12px 24px;border-radius:8px;font-size:14px;display:none;z-index:999}
-        .toast-erro{background:#ff4d4d}
-
-        #bloqueio{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.95);z-index:9999;display:flex;justify-content:center;align-items:center;flex-direction:column;padding:20px}
-        #bloqueio h1{color:#ff3366;font-size:40px;margin-bottom:20px}
-        #bloqueio p{color:#aaa;font-size:18px;max-width:500px;text-align:center;line-height:1.6}
-
-        @media(max-width:600px){#login{width:90%;padding:30px 20px}.grid{grid-template-columns:1fr}}
-    </style>
+.brandMark{width:44px;height:44px;flex:none;border-radius:12px;background:linear-gradient(135deg,var(--brand),var(--accent));display:grid;place-items:center;color:#fff;font:700 1.1rem var(--head);box-shadow:0 4px 12px rgba(0,0,0,.18)}
+</style>
 </head>
 <body>
+<main class="wrap">
+<header class="brand"><span class="brandMark" aria-hidden="true">CF</span><span><b>Créditos Fines</b><i>PJ</i></span></header>
+<h1>Simule seu empréstimo</h1>
+<p class="lead">Escolha o tipo de cliente, o valor e o prazo. A parcela, o total pago e o custo efetivo mudam enquanto você ajusta.</p>
 
-<div id="bloqueio" style="display:none">
-    <h1>🔒 Acesso Bloqueado</h1>
-    <p>Este aplicativo está em manutenção.<br>Por favor, aguarde a atualização das contas.</p>
-    <p style="color:#666;font-size:14px;margin-top:30px">Entre em contato com o suporte para mais informações.</p>
-</div>
-
-<div class="fundo">
-    <div class="luz luz1"></div>
-    <div class="luz luz2"></div>
-    <div class="luz luz3"></div>
-    <div id="estrelas"></div>
-    <div id="neve" class="neve"></div>
-</div>
-
-<div id="login">
-    <h1>💎 Vênus</h1>
-    <p class="sub">Loja de Streams</p>
-    <input type="text" id="user" placeholder="Usuário" required>
-    <input type="password" id="pass" placeholder="Senha" required>
-    <button onclick="entrar()">🔓 Entrar</button>
-    <p style="margin-top:12px;font-size:11px;color:#555">Insira seus dados de acesso</p>
-</div>
-
-<div id="painel">
-    <div class="topo">
-        <div>
-            <h1>💎 Loja Vênus</h1>
-            <span class="user" id="nomeUsuario">Olá, Cliente!</span>
-        </div>
-        <div class="botoes-topo">
-            <button class="atualizar-btn" onclick="forcarAtualizacao()">🔄 Atualizar Contas</button>
-            <button class="sair" onclick="sair()">Sair</button>
-        </div>
+<div class="grid">
+<div class="left">
+<ol class="steps" id="stepper" aria-label="Etapas"><li class="on" data-s="1"><span>1</span>Simulação</li><li data-s="2"><span>2</span>Seus dados</li><li data-s="3"><span>3</span>Confirmação</li></ol>
+<section class="card" id="step1" aria-label="Dados da simulação">
+  <fieldset>
+    <legend>Quem vai contratar?</legend>
+    <div class="seg">
+      <input type="radio" name="mode" id="m-cpf" value="cpf" checked><label for="m-cpf">Pessoa física (CPF)</label>
+      <input type="radio" name="mode" id="m-cnpj" value="cnpj"><label for="m-cnpj">Empresa (CNPJ)</label>
     </div>
+  </fieldset>
 
-    <div class="grid" id="gridPlataformas"></div>
+  <div class="field">
+    <label class="t" for="doc" id="docLabel">CPF</label>
+    <input type="text" id="doc" inputmode="numeric" autocomplete="off" placeholder="000.000.000-00" aria-describedby="docMsg">
+    <div class="msg" id="docMsg" aria-live="polite"></div>
+  </div>
+
+  <div class="field">
+    <label class="t" for="prod">Tipo de crédito</label>
+    <select id="prod"></select>
+  </div>
+
+  <div class="field">
+    <label class="t" for="amt">Quanto você precisa?</label>
+    <div class="money"><span>R$</span><input type="text" id="amt" inputmode="numeric" autocomplete="off" aria-describedby="amtMsg"></div>
+    <input type="range" id="amtR" aria-label="Valor do empréstimo">
+    <div class="rng"><span id="amtMin"></span><span id="amtMax"></span></div>
+    <div class="msg" id="amtMsg" aria-live="polite"></div>
+  </div>
+
+  <div class="field">
+    <label class="t" for="termR">Em quantos meses? <b id="termOut"></b></label>
+    <input type="range" id="termR" step="1">
+    <div class="rng"><span id="termMin"></span><span id="termMax"></span></div>
+  </div>
+
+  <fieldset>
+    <legend>Como as parcelas serão calculadas?</legend>
+    <div class="two">
+      <div class="opt"><input type="radio" name="sys" id="s-price" value="price" checked><label for="s-price"><b>Parcelas fixas</b><small>Tabela Price: mesmo valor todo mês</small></label></div>
+      <div class="opt"><input type="radio" name="sys" id="s-sac" value="sac"><label for="s-sac"><b>Parcelas decrescentes</b><small>SAC: começa maior e cai</small></label></div>
+    </div>
+  </fieldset>
+
+  <div class="field" style="margin-bottom:0">
+    <label class="t" for="inc" id="incLabel">Renda mensal (opcional)</label>
+    <div class="money"><span>R$</span><input type="text" id="inc" inputmode="numeric" autocomplete="off" placeholder="0" style="font-size:1.1rem"></div>
+    <div class="msg">Usada só para avisar se a parcela pesa demais no orçamento.</div>
+  </div>
+  <button class="sim" id="sim" type="button">Simular empréstimo</button>
+</section>
+<section class="card" id="step2" hidden aria-label="Seus dados">
+  <h2>Seus dados</h2>
+  <p class="intro">Diga como podemos falar com você sobre esta proposta.</p>
+  <div class="field"><label class="t" for="nome" id="nomeLabel">Nome completo</label><input type="text" id="nome" autocomplete="name" aria-describedby="nomeMsg"><div class="msg" id="nomeMsg" aria-live="polite"></div></div>
+  <div class="field"><label class="t" for="mail">E-mail</label><input type="text" id="mail" inputmode="email" autocomplete="email" placeholder="nome@empresa.com.br" aria-describedby="mailMsg"><div class="msg" id="mailMsg" aria-live="polite"></div></div>
+  <div class="field"><label class="t" for="tel">Telefone com WhatsApp</label><input type="text" id="tel" inputmode="tel" autocomplete="tel" placeholder="(00) 00000-0000" aria-describedby="telMsg"><div class="msg" id="telMsg" aria-live="polite"></div></div>
+  <div class="field"><label class="chk"><input type="checkbox" id="lgpd"><span>Autorizo o contato e o uso dos meus dados para tratar desta proposta.</span></label><div class="msg" id="lgpdMsg" aria-live="polite"></div></div>
+  <div class="row"><button class="ghost" id="back2" type="button">Voltar</button><button class="go" id="send" type="button">Finalizar simulação</button></div>
+</section>
+<section class="card" id="step3" hidden aria-label="Confirmação">
+  <h2 id="thanks">Simulação finalizada</h2>
+  <div class="approved" id="approvedBanner" hidden>APROVADO<small>Seu empréstimo foi pré-aprovado! Envie o resumo abaixo para o nosso atendimento e contrate.</small></div>
+  <p class="intro">Protocolo <span class="proto" id="proto"></span></p>
+  <ol class="next"><li><b>Envie o resumo.</b> Mande a proposta abaixo para o nosso atendimento.</li><li><b>Análise.</b> Nossa equipe confere os dados e analisa o seu pedido.</li><li><b>Retorno.</b> Falamos com você pelo e-mail ou WhatsApp informado.</li></ol>
+  <div class="alert">Esta simulação ainda não foi enviada ao atendimento. Para seguir com a contratação, envie ou cole o resumo abaixo na conversa com a equipe.</div>
+  <textarea class="sum2" id="finalBox" readonly aria-label="Resumo da proposta"></textarea>
+  <div class="row"><a class="go" id="wa" target="_blank" rel="noopener" hidden>Enviar pelo WhatsApp</a><button class="go" id="copy2" type="button">Copiar resumo</button><button class="ghost" id="again" type="button">Fazer nova simulação</button></div>
+  <div class="msg" id="finMsg" aria-live="polite"></div>
+</section>
 </div>
 
-<div id="toast" class="toast">Copiado!</div>
+<aside class="panel" id="result" aria-live="polite">
+  <h2 id="pLabel">Parcela mensal</h2>
+  <p class="big" id="pVal">—</p>
+  <p class="sub" id="pSub"></p>
+  <dl>
+    <div><dt>Você recebe</dt><dd id="rRec"></dd></div>
+    <div><dt>IOF (financiado)</dt><dd id="rIof"></dd></div>
+    <div><dt>Total de juros</dt><dd id="rJur"></dd></div>
+    <div><dt>Total a pagar</dt><dd id="rTot"></dd></div>
+    <div><dt>Taxa de juros</dt><dd id="rTax"></dd></div>
+    <div><dt>CET</dt><dd id="rCet"></dd></div>
+  </dl>
+  <div class="warn" id="warn" hidden></div>
+  <div class="btns">
+    <button class="b1" id="copy" type="button">Copiar resumo</button>
+    <button class="b2" id="tog" type="button" aria-expanded="false" aria-controls="tbl">Ver todas as parcelas</button>
+  </div>
+  <div class="msg" id="copyMsg" style="color:var(--panel-muted)"></div>
+  <textarea class="sum" id="sumBox" readonly hidden aria-label="Resumo da simulação"></textarea>
+</aside>
+</div>
+
+<div class="tbl" id="tbl" hidden>
+  <table>
+    <thead><tr><th>Parcela</th><th>Valor</th><th>Juros</th><th>Amortização</th><th>Saldo devedor</th></tr></thead>
+    <tbody id="rows"></tbody>
+  </table>
+</div>
+
+<p class="note">Simulação sem valor contratual. Taxas, IOF e CET são estimativas para fins de demonstração: o contrato final depende de análise de crédito e das condições da instituição. O IOF considera 0,38% fixo mais alíquota diária, limitada a 365 dias, e é somado ao valor financiado. Primeira parcela em 30 dias.</p>
+</main>
+
+<div class="bar" id="bar" role="button" tabindex="0" aria-label="Ir para o resultado"><span id="barLbl">Parcela</span><strong id="barVal">—</strong></div>
+
+
+<div class="loadOverlay" id="loadOverlay" hidden>
+  <div class="loadCard">
+    <div class="spinner"></div>
+    <h3>Analisando seu pedido...</h3>
+    <p class="loadTxt">Estamos consultando os órgãos de proteção ao crédito.</p>
+    <div class="loadCount" id="loadCount">60</div>
+    <p class="loadTxt">segundos restantes. Não feche esta página.</p>
+    <div class="loadBar"><i id="loadBar"></i></div>
+  </div>
+</div>
 
 <script>
-// ===== VERSÃO DO SISTEMA =====
-// ⚠️ MUDE ESTE NÚMERO QUANDO ADICIONAR CONTAS NOVAS ⚠️
-const VERSAO_SISTEMA = 2;
+(function(){
+var $=function(id){return document.getElementById(id)};
+var brl=new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'});
+var num=new Intl.NumberFormat('pt-BR');
+function pct(v){return (v*100).toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})+'%'}
 
-// ===== BLOQUEIO =====
-const BLOQUEAR_ACESSO = false;
+var CFG={
+ cpf:{name:'CPF',min:1000,max:150000,step:500,def:15000,tMin:6,tMax:72,tDef:36,daily:0.000082,
+  inc:'Renda mensal (opcional)',limit:0.30,
+  prods:[['Crédito pessoal',0.029],['Consignado',0.018],['Com garantia de veículo',0.015]]},
+ cnpj:{name:'CNPJ',min:5000,max:1000000,step:1000,def:50000,tMin:6,tMax:84,tDef:36,daily:0.000041,
+  inc:'Faturamento mensal (opcional)',limit:0.20,
+  prods:[['Capital de giro',0.024],['Investimento e equipamentos',0.019],['Com garantia de imóvel',0.013]]}
+};
+var mode='cpf',amount=CFG.cpf.def,term=36,sys='price',R=null;
 
-// ===== USUÁRIOS =====
-const usuariosCadastrados = [
-    { usuario: 'clienteA1', senha: 'x7k9m2' },
-    { usuario: 'clienteB2', senha: 'p4r8s1' },
-    { usuario: 'clienteC3', senha: 'w5n6t3' },
-    { usuario: 'clienteD4', senha: 'j9l2k7' },
-    { usuario: 'clienteE5', senha: 'm3q8v4' },
-    { usuario: 'clienteF6', senha: 'z6x1c9' },
-    { usuario: 'clienteG7', senha: 'b2h4n8' },
-    { usuario: 'clienteH8', senha: 'v5p7k2' },
-    { usuario: 'clienteI9', senha: 'r8t3m6' },
-    { usuario: 'clienteJ10', senha: 's9w4q1' },
-    { usuario: 'clienteK11', senha: 'f2d6h9' },
-    { usuario: 'clienteL12', senha: 'g5j8k3' },
-    { usuario: 'clienteM13', senha: 'y7u2i4' },
-    { usuario: 'clienteN14', senha: 'a3s5d8' },
-    { usuario: 'clienteO15', senha: 'e6r9t2' },
-    { usuario: 'clienteP16', senha: 'l4m7q1' },
-    { usuario: 'clienteQ17', senha: 'c8v2b5' },
-    { usuario: 'clienteR18', senha: 'n9x4z7' },
-    { usuario: 'clienteS19', senha: 'h1k6p3' },
-    { usuario: 'clienteT20', senha: 'w8e4r9' },
-    { usuario: 'admin', senha: 'admin2026' }
-];
+function digits(s){return String(s).replace(/\D/g,'')}
+function cpfOk(d){
+ if(d.length!==11||/^(\d)\1+$/.test(d))return false;
+ for(var t=9;t<11;t++){var s=0;for(var i=0;i<t;i++)s+=d[i]*(t+1-i);var v=(s*10)%11%10;if(v!=d[t])return false}
+ return true}
+function cnpjOk(d){
+ if(d.length!==14||/^(\d)\1+$/.test(d))return false;
+ for(var t=12;t<14;t++){var w=t-7,s=0;for(var i=0;i<t;i++){s+=d[i]*w--;if(w<2)w=9}var v=s%11<2?0:11-s%11;if(v!=d[t])return false}
+ return true}
+function maskDoc(d){
+ if(mode==='cpf'){d=d.slice(0,11);return d.replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d{1,2})$/,'$1-$2')}
+ d=d.slice(0,14);return d.replace(/(\d{2})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1.$2').replace(/(\d{3})(\d)/,'$1/$2').replace(/(\d{4})(\d{1,2})$/,'$1-$2')}
+function docState(){
+ var d=digits($('doc').value),full=mode==='cpf'?11:14;
+ if(d.length<full)return d.length?'partial':'empty';
+ return (mode==='cpf'?cpfOk(d):cnpjOk(d))?'ok':'bad'}
 
-// ===== PLATAFORMAS E CONTAS =====
-const plataformas = [
-    {
-        nome: 'Spotify',
-        contas: [
-            { id: 'spotify_1', email: 'spotify1@email.com', senha: 'senha123', disponivel: true },
-            { id: 'spotify_2', email: 'spotify2@email.com', senha: 'senha456', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Canva',
-        tipo: 'link',
-        contas: [
-            { id: 'canva_1', link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite', disponivel: true },
-            { id: 'canva_2', link: 'https://www.canva.com/brand/join?token=-BY0gYPSrNDcqCEFKB0ofA&referrer=team-invite', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Amazon Prime',
-        contas: [
-            { id: 'prime_1', email: 'guce827272@hotmail.com', senha: 'jo9De6&$@#!', disponivel: true }
-        ],
-        obs: 'Adicionar de 7 dias (tela)'
-    },
-    {
-        nome: 'Max (HBO)',
-        contas: [
-            { id: 'hbomax_1', email: 'r2cesar@hotmail.com', senha: 'Nuevo263545', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Globoplay',
-        contas: [
-            { id: 'globoplay_1', email: 'silvaestamparia@gmail.com', senha: 'Jhon@8811', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Netflix (TV)',
-        tipo: 'link',
-        contas: [
-            { id: 'netflixtv_1', link: 'https://www.netflix.com/convite/123456', disponivel: true }
-        ],
-        obs: 'Cliente tem direito a 3 ativações na TV'
-    },
-    {
-        nome: 'Youcine',
-        contas: [
-            { id: 'youcine_1', email: 'uyhskw8e77272@hotmail.com', senha: '0p9o8i7U', disponivel: true },
-            { id: 'youcine_2', email: 'youcine2@email.com', senha: 'senha456', disponivel: true },
-            { id: 'youcine_3', email: 'youcine3@email.com', senha: 'senha789', disponivel: true }
-        ],
-        obs: 'Cliente tem direito a 3 contas'
-    },
-    {
-        nome: 'YouTube',
-        contas: [
-            { id: 'youtube_1', email: 'youtube1@email.com', senha: 'senha123', disponivel: true }
-        ]
-    },
-    {
-        nome: 'UniTV',
-        contas: [
-            { id: 'unitv_1', email: 'uyhskw8e77272@hotmail.com', senha: '0p9o8i7U', disponivel: true },
-            { id: 'unitv_2', email: 'unitv2@email.com', senha: 'senha456', disponivel: true },
-            { id: 'unitv_3', email: 'unitv3@email.com', senha: 'senha789', disponivel: true }
-        ],
-        obs: 'Cliente tem direito a 3 contas'
-    },
-    {
-        nome: 'Crunchyroll',
-        contas: [
-            { id: 'crunchyroll_1', email: 'crunchyroll1@email.com', senha: 'senha123', disponivel: true }
-        ],
-        obs: 'Ativação na TV'
-    },
-    {
-        nome: 'Deezer Individual',
-        contas: [
-            { id: 'deezer_1', email: 'votehap834@gicont.com', senha: 'votehap834@', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Paramount+',
-        contas: [
-            { id: 'paramount_1', email: 'kponasim4@gmail.com', senha: 'nasimdh123', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Deezer Família',
-        contas: [
-            { id: 'deezerfam_1', email: 'deezerfamilia1@email.com', senha: 'senha123', disponivel: true }
-        ]
-    },
-    {
-        nome: 'YouTube Família',
-        contas: [
-            { id: 'youtubefam_1', email: 'youtubefamilia1@email.com', senha: 'senha123', disponivel: true }
-        ]
-    },
-    {
-        nome: 'Netflix Celular',
-        tipo: 'link',
-        contas: [
-            { id: 'netflixcel_1', link: 'https://www.netflix.com/convite/789101', disponivel: true },
-            { id: 'netflixcel_2', link: 'https://www.netflix.com/convite/112131', disponivel: true },
-            { id: 'netflixcel_3', link: 'https://www.netflix.com/convite/415161', disponivel: true }
-        ],
-        obs: 'Cliente tem direito a 3 contas no celular'
-    }
-];
+function price(P,i,n){return i===0?P/n:P*i/(1-Math.pow(1+i,-n))}
+function build(P,i,n,s){
+ var rows=[],bal=P,pmt=price(P,i,n),am=P/n;
+ for(var k=1;k<=n;k++){
+  var j=bal*i,a=s==='price'?pmt-j:am,p=a+j;bal=Math.max(0,bal-a);
+  rows.push({k:k,p:p,j:j,a:a,b:k===n?0:bal})}
+ return rows}
+function irr(rec,rows){
+ var lo=0,hi=1;
+ for(var it=0;it<100;it++){
+  var m=(lo+hi)/2,v=rec;
+  for(var k=0;k<rows.length;k++)v-=rows[k].p/Math.pow(1+m,k+1);
+  if(v>0)lo=m;else hi=m}
+ return (lo+hi)/2}
 
-// ===== FUNÇÃO PARA RECARREGAR O ESTADO DAS CONTAS =====
-function recarregarEstadoContas() {
-    try {
-        // Verifica a versão salva
-        const versaoSalva = localStorage.getItem('versaoSistema') || '0';
-        
-        // Se a versão mudou, limpa as contas pegas
-        if (parseInt(versaoSalva) !== VERSAO_SISTEMA) {
-            localStorage.setItem('versaoSistema', String(VERSAO_SISTEMA));
-            localStorage.removeItem('contasPegas');
-            // Todas as contas ficam disponíveis
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    c.disponivel = true;
-                });
-            });
-            return;
-        }
-        
-        // Se a versão é a mesma, carrega as contas pegas
-        const salvo = localStorage.getItem('contasPegas');
-        if (salvo) {
-            const pegas = JSON.parse(salvo);
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    c.disponivel = !pegas.includes(c.id);
-                });
-            });
-        } else {
-            // Se não tiver nada salvo, todas disponíveis
-            plataformas.forEach(p => {
-                p.contas.forEach(c => {
-                    c.disponivel = true;
-                });
-            });
-        }
-    } catch(e) {
-        console.log('Erro ao recarregar estado:', e);
-    }
+function calc(){
+ var c=CFG[mode],pr=c.prods[$('prod').selectedIndex]||c.prods[0],i=pr[1];
+ var a=Math.min(c.max,Math.max(c.min,amount));
+ var iof=a*(0.0038+Math.min(term*30,365)*c.daily),P=a+iof;
+ var rows=build(P,i,term,sys),tot=0;
+ rows.forEach(function(r){tot+=r.p});
+ var cet=irr(a,rows);
+ R={a:a,iof:iof,P:P,i:i,rows:rows,tot:tot,jur:tot-P,cet:cet,cetA:Math.pow(1+cet,12)-1,prod:pr[0]};
+ render()}
+
+function render(){
+ var first=R.rows[0].p,last=R.rows[R.rows.length-1].p;
+ if(sys==='price'){
+  $('pLabel').textContent='Parcela mensal';$('pVal').textContent=brl.format(first);
+  $('pSub').textContent=term+' parcelas iguais';$('barLbl').textContent='Parcela · '+term+'x';
+ }else{
+  $('pLabel').textContent='Primeira parcela';$('pVal').textContent=brl.format(first);
+  $('pSub').textContent='Cai até '+brl.format(last)+' na última';$('barLbl').textContent='1ª parcela · '+term+'x';
+ }
+ $('barVal').textContent=brl.format(first);
+ $('rRec').textContent=brl.format(R.a);
+ $('rIof').textContent=brl.format(R.iof);
+ $('rJur').textContent=brl.format(R.jur);
+ $('rTot').textContent=brl.format(R.tot);
+ $('rTax').textContent=pct(R.i)+' a.m.';
+ $('rCet').textContent=pct(R.cet)+' a.m. · '+pct(R.cetA)+' a.a.';
+ var inc=Number(digits($('inc').value)),w=$('warn');
+ if(inc>0){
+  var ratio=first/inc,lim=CFG[mode].limit;
+  if(ratio>lim){w.hidden=false;w.textContent='A parcela compromete '+Math.round(ratio*100)+'% do valor informado. Acima de '+Math.round(lim*100)+'%, a aprovação costuma ficar mais difícil. Tente um prazo maior ou um valor menor.'}
+  else w.hidden=true
+ }else w.hidden=true;
+ $('rows').innerHTML=R.rows.map(function(r){
+  return '<tr><td>'+r.k+'</td><td>'+brl.format(r.p)+'</td><td>'+brl.format(r.j)+'</td><td>'+brl.format(r.a)+'</td><td>'+brl.format(r.b)+'</td></tr>'}).join('');
+ var c=CFG[mode],m=$('amtMsg');
+ if(amount<c.min||amount>c.max){m.className='msg err';m.textContent='Para '+c.name+', o valor vai de '+brl.format(c.min)+' a '+brl.format(c.max)+'. Calculamos com '+brl.format(R.a)+'.'}
+ else{m.className='msg';m.textContent=''}
 }
 
-// ===== CARREGA CONTAS JÁ PEGAS =====
-recarregarEstadoContas();
+function setMode(m){
+ mode=m;var c=CFG[m];
+ $('docLabel').textContent=c.name;
+ $('doc').placeholder=m==='cpf'?'000.000.000-00':'00.000.000/0000-00';
+ $('doc').value='';$('docMsg').textContent='';$('docMsg').className='msg';
+ $('prod').innerHTML=c.prods.map(function(p,k){return '<option value="'+k+'">'+p[0]+' · '+pct(p[1])+' a.m.</option>'}).join('');
+ $('incLabel').textContent=c.inc;
+ var r=$('amtR');r.min=c.min;r.max=c.max;r.step=c.step;
+ amount=c.def;r.value=amount;$('amt').value=num.format(amount);
+ $('amtMin').textContent=brl.format(c.min);$('amtMax').textContent=brl.format(c.max);
+ var t=$('termR');t.min=c.tMin;t.max=c.tMax;term=c.tDef;t.value=term;
+ $('termMin').textContent=c.tMin+' meses';$('termMax').textContent=c.tMax+' meses';
+ $('termOut').textContent=term+' meses';
+ calc()}
 
-// ===== FUNÇÃO PEGAR CONTA =====
-function pegarConta(plataformaIdx, contaIdx) {
-    const conta = plataformas[plataformaIdx].contas[contaIdx];
-    
-    if (!conta.disponivel) {
-        mostrarToast('❌ Esta conta já foi utilizada!', true);
-        return;
-    }
+document.querySelectorAll('input[name=mode]').forEach(function(e){e.addEventListener('change',function(){setMode(e.value)})});
+document.querySelectorAll('input[name=sys]').forEach(function(e){e.addEventListener('change',function(){sys=e.value;calc()})});
+$('prod').addEventListener('change',calc);
+$('doc').addEventListener('input',function(){
+ var d=digits($('doc').value);this.value=maskDoc(d);
+ var s=docState(),m=$('docMsg');
+ if(s==='ok'){m.className='msg ok';m.textContent=CFG[mode].name+' válido'}
+ else if(s==='bad'){m.className='msg err';m.textContent=CFG[mode].name+' inválido. Confira os números digitados.'}
+ else{m.className='msg';m.textContent=''}});
+$('amt').addEventListener('input',function(){
+ var d=digits(this.value).slice(0,9);amount=Number(d)||0;this.value=d?num.format(amount):'';
+ $('amtR').value=Math.min(CFG[mode].max,Math.max(CFG[mode].min,amount));calc()});
+$('amt').addEventListener('blur',function(){
+ var c=CFG[mode];amount=Math.min(c.max,Math.max(c.min,amount||c.min));this.value=num.format(amount);$('amtR').value=amount;calc()});
+$('amtR').addEventListener('input',function(){amount=Number(this.value);$('amt').value=num.format(amount);calc()});
+$('termR').addEventListener('input',function(){term=Number(this.value);$('termOut').textContent=term+' meses';calc()});
+$('inc').addEventListener('input',function(){
+ var d=digits(this.value).slice(0,9);this.value=d?num.format(Number(d)):'';render()});
+$('tog').addEventListener('click',function(){
+ var t=$('tbl'),open=t.hidden;t.hidden=!open;this.setAttribute('aria-expanded',open);
+ this.textContent=open?'Ocultar parcelas':'Ver todas as parcelas';
+ if(open)t.scrollIntoView({behavior:'smooth',block:'start'})});
+function toResult(){$('result').scrollIntoView({behavior:'smooth',block:'start'})}
+$('bar').addEventListener('click',toResult);
+$('bar').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();toResult()}});
+$('copy').addEventListener('click',function(){
+ var m=$('copyMsg');
+ $('sumBox').hidden=true;
+ var t='Créditos Fines PJ - Simulação de empréstimo\n'+(docState()==='ok'?CFG[mode].name+': '+$('doc').value+'\n':'')+'Produto: '+R.prod+'\nValor recebido: '+brl.format(R.a)+'\nPrazo: '+term+' meses ('+(sys==='price'?'parcelas fixas':'parcelas decrescentes')+')\n'
+ +(sys==='price'?'Parcela: ':'1ª parcela: ')+brl.format(R.rows[0].p)+'\nTotal a pagar: '+brl.format(R.tot)+'\nTaxa: '+pct(R.i)+' a.m.\nCET: '+pct(R.cet)+' a.m. / '+pct(R.cetA)+' a.a.\nSimulação sem valor contratual.';
+ function showBox(x){var b=$('sumBox');b.hidden=false;b.value=x;b.focus();b.select()}
+ function done(ok){m.textContent=ok?'Resumo copiado. Agora é só colar.':'Não foi possível copiar sozinho. O resumo está selecionado abaixo: use Ctrl+C.';if(!ok)showBox(t)}
+ function legacy(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();var ok=document.execCommand('copy');document.body.removeChild(a);return ok}catch(e){return false}}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){done(true)},function(){done(legacy())})}else done(legacy())});
+var WHATSAPP='';
+function goStep(n){
+ for(var k=1;k<=3;k++)$('step'+k).hidden=k!==n;
+ document.querySelectorAll('.steps li').forEach(function(li){var k=Number(li.dataset.s);li.className=k<n?'done':k===n?'on':''});
+ $('nomeLabel').textContent=mode==='cpf'?'Nome completo':'Nome do responsável';
+ $('stepper').scrollIntoView({behavior:'smooth',block:'start'})}
+function fail(id,msg){var m=$(id+'Msg');m.className='msg err';m.textContent=msg;return false}
+function clean(id){var m=$(id+'Msg');m.className='msg';m.textContent=''}
+function copyText(t,cb){
+ function legacy(){try{var a=document.createElement('textarea');a.value=t;a.setAttribute('readonly','');a.style.cssText='position:fixed;top:0;left:0;opacity:0';document.body.appendChild(a);a.select();var ok=document.execCommand('copy');document.body.removeChild(a);return ok}catch(e){return false}}
+ if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(function(){cb(true)},function(){cb(legacy())})}else cb(legacy())}
+$('sim').addEventListener('click',function(){
+ calc();
+ var s=docState(),m=$('docMsg');
+ if(s!=='ok'){m.className='msg err';m.textContent=(s==='bad'?CFG[mode].name+' inválido. Confira os números digitados.':'Informe o '+CFG[mode].name+' completo para continuar.');$('doc').focus();return}
+ if(amount<CFG[mode].min||amount>CFG[mode].max){$('amt').focus();return}
+ goStep(2)});
+$('tel').addEventListener('input',function(){var d=digits(this.value).slice(0,11);this.value=d.length>10?d.replace(/(\d{2})(\d{5})(\d{0,4})/,'($1) $2-$3'):d.length>6?d.replace(/(\d{2})(\d{4})(\d{0,4})/,'($1) $2-$3'):d.length>2?d.replace(/(\d{2})(\d+)/,'($1) $2'):d});
+$('back2').addEventListener('click',function(){goStep(1)});
+$('send').addEventListener('click',function(){
+ var ok=true,n=$('nome').value.trim(),e=$('mail').value.trim(),t=digits($('tel').value);
+ ['nome','mail','tel','lgpd'].forEach(function(i){clean(i)});
+ if(n.length<5||n.indexOf(' ')<0)ok=fail('nome','Informe nome e sobrenome.');
+ if(!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e))ok=fail('mail','Informe um e-mail válido, como nome@empresa.com.br.');
+ if(t.length<10)ok=fail('tel','Informe o telefone com DDD.');
+ if(!$('lgpd').checked)ok=fail('lgpd','Marque a autorização para continuar.');
+ if(!ok){var f=document.querySelector('#step2 .msg.err');if(f)f.scrollIntoView({block:'center',behavior:'smooth'});return}
+ calc();
+ var d=new Date(),p2=function(x){return String(x).padStart(2,'0')};
+ var proto='FN-'+d.getFullYear()+p2(d.getMonth()+1)+p2(d.getDate())+'-'+Math.random().toString(36).slice(2,7).toUpperCase();
+ var txt='Créditos Fines PJ - Proposta de empréstimo\nProtocolo: '+proto+'\nData: '+p2(d.getDate())+'/'+p2(d.getMonth()+1)+'/'+d.getFullYear()+' '+p2(d.getHours())+':'+p2(d.getMinutes())+'\n\n'+(mode==='cpf'?'Cliente: ':'Responsável: ')+n+'\n'+CFG[mode].name+': '+$('doc').value+'\nE-mail: '+e+'\nTelefone: '+$('tel').value+'\n\nProduto: '+R.prod+'\nValor recebido: '+brl.format(R.a)+'\nPrazo: '+term+' meses ('+(sys==='price'?'parcelas fixas':'parcelas decrescentes')+')\n'+(sys==='price'?'Parcela: ':'1ª parcela: ')+brl.format(R.rows[0].p)+'\nTotal a pagar: '+brl.format(R.tot)+'\nTaxa: '+pct(R.i)+' a.m.\nCET: '+pct(R.cet)+' a.m. / '+pct(R.cetA)+' a.a.\n\nSimulação sem valor contratual. Sujeita a análise de crédito.';
+ $('proto').textContent=proto;$('thanks').textContent='Obrigado, '+n.split(' ')[0]+'! Simulação finalizada';$('finalBox').value=txt;
+ var w=$('wa');if(WHATSAPP){w.hidden=false;w.href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(txt)}else w.hidden=true;
+ $('finMsg').textContent='';
+ startApproval(proto, txt, n)});
+$('copy2').addEventListener('click',function(){copyText($('finalBox').value,function(ok){$('finMsg').textContent=ok?'Resumo copiado. Agora é só colar na conversa com o atendimento.':'Não foi possível copiar sozinho. Selecione o texto acima e use Ctrl+C.';if(!ok){$('finalBox').focus();$('finalBox').select()}})});
+$('again').addEventListener('click',function(){['nome','mail','tel'].forEach(function(i){$(i).value=''});$('lgpd').checked=false;try{localStorage.removeItem('finesApproval')}catch(e){}goStep(1)});
 
-    if (!confirm('⚠️ Tem certeza que quer pegar esta conta?\n\nDepois de confirmar, ela será removida do painel permanentemente.')) {
-        return;
-    }
 
-    conta.disponivel = false;
-
-    try {
-        let pegas = JSON.parse(localStorage.getItem('contasPegas') || '[]');
-        if (!pegas.includes(conta.id)) {
-            pegas.push(conta.id);
-            localStorage.setItem('contasPegas', JSON.stringify(pegas));
-        }
-    } catch(e) {
-        console.log('Erro ao salvar:', e);
-    }
-
-    carregarPainel();
-    mostrarToast('✅ Conta pega com sucesso!');
-}
-
-// ===== FUNÇÃO FORÇAR ATUALIZAÇÃO =====
-function forcarAtualizacao() {
-    recarregarEstadoContas();
-    carregarPainel();
-    mostrarToast('🔄 Contas atualizadas!');
-}
-
-// ===== VERIFICA BLOQUEIO =====
-if (BLOQUEAR_ACESSO) {
-    document.getElementById('bloqueio').style.display = 'flex';
-    document.getElementById('login').style.display = 'none';
-} else {
-    document.getElementById('bloqueio').style.display = 'none';
-    document.getElementById('login').style.display = 'block';
-}
-
-// ===== LOGIN PERSISTENTE =====
-function verificarLoginSalvo() {
-    const usuarioSalvo = localStorage.getItem('usuarioLogado');
-    if (usuarioSalvo) {
-        const existe = usuariosCadastrados.some(u => u.usuario === usuarioSalvo);
-        if (existe) {
-            document.getElementById('login').style.display = 'none';
-            document.getElementById('painel').style.display = 'block';
-            document.getElementById('nomeUsuario').textContent = 'Olá, ' + usuarioSalvo + '!';
-            carregarPainel();
-            return true;
-        } else {
-            localStorage.removeItem('usuarioLogado');
-        }
-    }
-    return false;
-}
-
-// ===== FUNÇÕES =====
-function entrar() {
-    if (BLOQUEAR_ACESSO) {
-        alert('🔒 Acesso bloqueado! O app está em manutenção.');
-        return;
-    }
-
-    var userDigitado = document.getElementById('user').value.trim();
-    var passDigitado = document.getElementById('pass').value.trim();
-
-    if(userDigitado === '' || passDigitado === '') {
-        alert('Por favor, digite o usuário e a senha!');
-        return;
-    }
-
-    var usuarioValido = usuariosCadastrados.find(function(u) {
-        return u.usuario.toLowerCase() === userDigitado.toLowerCase() && u.senha === passDigitado;
-    });
-
-    if (usuarioValido) {
-        localStorage.setItem('usuarioLogado', userDigitado);
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('painel').style.display = 'block';
-        document.getElementById('nomeUsuario').textContent = 'Olá, ' + userDigitado + '!';
-        carregarPainel();
-    } else {
-        alert('Usuário ou senha incorretos!');
-    }
-}
-
-function sair() {
-    localStorage.removeItem('usuarioLogado');
-    document.getElementById('login').style.display = 'block';
-    document.getElementById('painel').style.display = 'none';
-    document.getElementById('user').value = '';
-    document.getElementById('pass').value = '';
-}
-
-function carregarPainel() {
-    var grid = document.getElementById('gridPlataformas');
-    grid.innerHTML = '';
-    
-    var temContaDisponivel = false;
-    
-    plataformas.forEach(function(p, pIdx) {
-        var temDisponivel = p.contas.some(function(c) { return c.disponivel; });
-        if (!temDisponivel) return;
-        
-        temContaDisponivel = true;
-        
-        var card = document.createElement('div');
-        card.className = 'card';
-
-        var html = '<h3>' + p.nome + '</h3>';
-        html += '<span class="badge">Ativo</span>';
-
-        if(p.obs) {
-            html += '<div class="obs">⚠️ ' + p.obs + '</div>';
-        }
-
-        html += '<div class="contas">';
-        p.contas.forEach(function(c, cIdx) {
-            if (!c.disponivel) {
-                html += '<div class="conta-usada">';
-                html += '❌ Conta já utilizada';
-                html += '</div>';
-                return;
-            }
-            
-            html += '<div class="conta">';
-            if(p.tipo === 'link') {
-                html += '<div class="linha">';
-                html += '<span class="label">Link:</span>';
-                html += '<span class="valor">' + c.link + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.link.replace(/'/g, "\\'") + '\')">Copiar</button>';
-                html += '</div>';
-                html += '<div class="linha">';
-                html += '<button onclick="abrirLink(\'' + c.link.replace(/'/g, "\\'") + '\')" class="btn-link">🔗 Abrir Link</button>';
-                html += '</div>';
-            } else {
-                html += '<div class="linha">';
-                html += '<span class="label">Email:</span>';
-                html += '<span class="valor">' + c.email + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.email.replace(/'/g, "\\'") + '\')">Copiar</button>';
-                html += '</div>';
-                html += '<div class="linha">';
-                html += '<span class="label">Senha:</span>';
-                html += '<span class="valor">' + c.senha + '</span>';
-                html += '<button class="btn-copiar" onclick="copiar(\'' + c.senha.replace(/'/g, "\\'") + '\')">Copiar</button>';
-                html += '</div>';
-            }
-            html += '<button class="btn-pegar" onclick="pegarConta(' + pIdx + ',' + cIdx + ')">🔓 Pegar Conta</button>';
-            html += '</div>';
-        });
-        html += '</div>';
-
-        card.innerHTML = html;
-        grid.appendChild(card);
-    });
-    
-    if (!temContaDisponivel) {
-        grid.innerHTML = `
-            <div style="grid-column:1/-1;text-align:center;padding:60px 20px;background:rgba(20,20,30,0.85);border-radius:16px;border:1px solid rgba(255,51,102,0.2)">
-                <h2 style="color:#ffaa00;font-size:24px;margin-bottom:15px">🔄 Nenhuma conta disponível</h2>
-                <p style="color:#888;font-size:16px">Todas as contas foram utilizadas.<br>Aguarde o administrador adicionar novas contas.</p>
-            </div>
-        `;
-    }
-}
-
-function abrirLink(url) {
-    if (url && url.startsWith('http')) {
-        window.open(url, '_blank', 'noopener,noreferrer');
-    } else {
-        alert('Link inválido!');
-    }
-}
-
-function copiar(texto) {
-    var textoLimpo = texto.replace(/[^\x20-\x7E]/g, '').trim();
-    if(navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(textoLimpo).then(function() {
-            mostrarToast('📋 Copiado!');
-        }).catch(function() {
-            copiarFallback(textoLimpo);
-        });
-    } else {
-        copiarFallback(textoLimpo);
-    }
-}
-
-function copiarFallback(texto) {
-    var input = document.createElement('input');
-    input.value = texto;
-    document.body.appendChild(input);
-    input.select();
-    document.execCommand('copy');
-    document.body.removeChild(input);
-    mostrarToast('📋 Copiado!');
-}
-
-function mostrarToast(msg, erro) {
-    var toast = document.getElementById('toast');
-    toast.textContent = msg;
-    toast.className = 'toast';
-    if (erro) {
-        toast.classList.add('toast-erro');
-    }
-    toast.style.display = 'block';
-    setTimeout(function() {
-        toast.style.display = 'none';
-    }, 3000);
-}
-
-// ===== INICIALIZA =====
-document.addEventListener('DOMContentLoaded', function() {
-    if (!verificarLoginSalvo()) {
-        document.getElementById('login').style.display = 'block';
-        document.getElementById('painel').style.display = 'none';
-    }
-    
-    document.getElementById('user').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            document.getElementById('pass').focus();
-        }
-    });
-    document.getElementById('pass').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter') {
-            entrar();
-        }
-    });
-});
-
-// ===== ESTRELAS E NEVE =====
-var estrelasContainer = document.getElementById('estrelas');
-for (var i = 0; i < 120; i++) {
-    var estrela = document.createElement('div');
-    estrela.className = 'estrela';
-    estrela.style.left = Math.random() * 100 + '%';
-    estrela.style.top = Math.random() * 100 + '%';
-    estrela.style.width = (Math.random() * 4 + 2) + 'px';
-    estrela.style.height = estrela.style.width;
-    estrela.style.animationDelay = (Math.random() * 3) + 's';
-    estrela.style.animationDuration = (Math.random() * 2 + 1.5) + 's';
-    estrelasContainer.appendChild(estrela);
-}
-
-var neveContainer = document.getElementById('neve');
-var flocos = ['❄', '❅', '❆', '✦', '•'];
-for (var i = 0; i < 80; i++) {
-    var floco = document.createElement('div');
-    floco.className = 'floco';
-    floco.textContent = flocos[Math.floor(Math.random() * flocos.length)];
-    floco.style.left = Math.random() * 100 + '%';
-    floco.style.fontSize = (Math.random() * 12 + 8) + 'px';
-    floco.style.animationDuration = (Math.random() * 8 + 6) + 's';
-    floco.style.animationDelay = (Math.random() * 10) + 's';
-    floco.style.opacity = Math.random() * 0.6 + 0.3;
-    neveContainer.appendChild(floco);
-}
+var WAIT_SECONDS=60;
+var loadTimer=null;
+function saveApproval(obj){try{localStorage.setItem('finesApproval',JSON.stringify(obj))}catch(e){}}
+function loadApproval(){try{return JSON.parse(localStorage.getItem('finesApproval'))}catch(e){return null}}
+function showApproved(proto,txt,n){
+ $('loadOverlay').hidden=true;
+ if(loadTimer){clearInterval(loadTimer);loadTimer=null}
+ $('proto').textContent=proto;
+ $('thanks').textContent='Obrigado, '+n.split(' ')[0]+'! Simulação finalizada';
+ $('finalBox').value=txt;
+ $('approvedBanner').hidden=false;
+ var w=$('wa');if(WHATSAPP){w.hidden=false;w.href='https://wa.me/'+WHATSAPP+'?text='+encodeURIComponent(txt)}else w.hidden=true;
+ $('finMsg').textContent='';
+ goStep(3);
+ saveApproval({status:'approved',proto:proto,txt:txt,n:n})}
+function startApproval(proto,txt,n){
+ var start=Date.now();
+ saveApproval({status:'pending',proto:proto,txt:txt,n:n,start:start});
+ $('loadOverlay').hidden=false;
+ runCountdown(start,proto,txt,n)}
+function runCountdown(start,proto,txt,n){
+ if(loadTimer)clearInterval(loadTimer);
+ function tick(){
+  var elapsed=Math.floor((Date.now()-start)/1000);
+  var left=Math.max(0,WAIT_SECONDS-elapsed);
+  $('loadCount').textContent=left;
+  var pct=Math.min(100,(elapsed/WAIT_SECONDS)*100);
+  $('loadBar').style.width=pct+'%';
+  if(left<=0){showApproved(proto,txt,n)}
+ }
+ tick();
+ loadTimer=setInterval(tick,1000)}
+setMode('cpf');
+// Restore state on page load
+(function restore(){
+ var st=loadApproval();
+ if(!st)return;
+ if(st.status==='approved'){
+   // Show approved result directly
+   calc();
+   showApproved(st.proto,st.txt,st.n);
+ }else if(st.status==='pending'){
+   var elapsed=Math.floor((Date.now()-st.start)/1000);
+   if(elapsed>=WAIT_SECONDS){showApproved(st.proto,st.txt,st.n)}
+   else{$('loadOverlay').hidden=false;runCountdown(st.start,st.proto,st.txt,st.n)}
+ }
+})();
+})();
 </script>
 </body>
 </html>
